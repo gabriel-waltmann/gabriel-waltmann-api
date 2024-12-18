@@ -1,0 +1,423 @@
+2024-12-17 13:48:04,948 [    285]   WARN - c.i.o.u.r.overrides - Conflicting registry key definition for key kotlin.mpp.tests.force.gradle: it was defined by plugin org.jetbrains.kotlin but redefined by plugin org.jetbrains.kotlin. Consider adding overrides="true" for one of the plugins, see the documentation for com.intellij.openapi.util.registry.RegistryKeyBean.overrides for more details.
+2024-12-17 13:48:05,062 [    399]   WARN - #c.i.o.e.i.FontFamilyServiceImpl - Couldn't access required runtime API, will fall back to basic logic of font selection
+2024-12-17 13:48:06,417 [   1754]   WARN - #c.i.s.ComponentManagerImpl - `preload=NOT_HEADLESS` must be used only for core services (service=org.jetbrains.kotlin.idea.search.refIndex.KotlinCompilerReferenceIndexService, plugin=org.jetbrains.kotlin)
+2024-12-17 13:48:06,417 [   1754]   WARN - #c.i.s.ComponentManagerImpl - `preload=TRUE` must be used only for core services (service=org.jetbrains.idea.maven.project.MavenProjectsManagerEx, plugin=org.jetbrains.idea.maven)
+2024-12-17 13:48:06,418 [   1755]   WARN - #c.i.s.ComponentManagerImpl - `preload=TRUE` must be used only for core services (service=org.jetbrains.idea.maven.navigator.MavenProjectsNavigator, plugin=org.jetbrains.idea.maven)
+2024-12-17 13:48:06,418 [   1755]   WARN - #c.i.s.ComponentManagerImpl - `preload=TRUE` must be used only for core services (service=org.jetbrains.idea.maven.tasks.MavenShortcutsManager, plugin=org.jetbrains.idea.maven)
+2024-12-17 13:48:06,885 [   2222]   WARN - #c.i.u.j.JBCefApp - JCefAppConfig.class is not from a JBR module, url: jar:file:/usr/share/idea/lib/lib.jar!/com/jetbrains/cef/JCefAppConfig.class (Use JBR bundled with the IDE)
+2024-12-17 13:48:08,342 [   3679]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, MavenProjectsManagerEx.addManagedFilesWithProfilesAndUpdate waltmann-api
+ERROR StatusLogger Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
+2024-12-17 13:48:14,863 [  10200]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, MavenProjectsManagerEx.addManagedFilesWithProfilesAndUpdate waltmann-api
+2024-12-17 13:49:38,277 [  93614]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2024-12-17 13:49:38,278 [  93615]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.instance' has been deprecated in favor of 'resource.loader.includes.instance'
+2024-12-17 13:49:47,065 [ 102402]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error refreshing context
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 13:50:05,693 [ 121030]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 13:50:51,066 [ 166403]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error refreshing context
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 13:51:26,164 [ 201501]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error refreshing context
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 13:52:47,132 [ 282469]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 13:52:47,222 [ 282559]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 13:54:25,583 [ 380920]   WARN - #c.i.u.Alarm - Do not create alarm without coroutineScope: com.intellij.ide.util.gotoByName.ChooseByNameBase.<init>(ChooseByNameBase.java:122)
+2024-12-17 13:54:25,584 [ 380921]   WARN - #c.i.u.Alarm - Do not create alarm without coroutineScope: com.intellij.ide.util.gotoByName.ChooseByNameBase.<init>(ChooseByNameBase.java:136)
+2024-12-17 13:54:25,590 [ 380927]   WARN - #c.i.u.Alarm - Do not create alarm without coroutineScope: com.intellij.ide.util.gotoByName.ChooseByNameBase$CalcElementsThread.<init>(ChooseByNameBase.java:1280)
+2024-12-17 13:54:25,590 [ 380927]   WARN - #c.i.u.Alarm - Do not create alarm without coroutineScope: com.intellij.ide.util.gotoByName.ChooseByNameBase$CalcElementsThread.<init>(ChooseByNameBase.java:1281)
+2024-12-17 13:54:31,530 [ 386867]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 13:55:52,670 [ 468007]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 13:57:44,558 [ 579895]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+Opening in existing browser session.
+2024-12-17 15:39:17,707 [6673044]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:39:27,979 [6683316]   WARN - #com.codeium.intellij.chat_server_client.ChatServerClient - [ChatServerClient] WebSocket connection failed with error: java.io.EOFException
+2024-12-17 15:39:30,404 [6685741]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:39:44,274 [6699611]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:39:47,239 [6702576]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:40:19,625 [6734962]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:40:42,940 [6758277]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:40:52,972 [6768309]   WARN - #c.i.u.Alarm - Do not create alarm without coroutineScope: com.intellij.codeInsight.hint.ParameterInfoControllerBase.<init>(ParameterInfoControllerBase.java:63)
+2024-12-17 15:41:00,354 [6775691]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:41:31,192 [6806529]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:42:19,520 [6854857]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:44:14,644 [6969981]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:45:18,694 [7034031]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:46:35,600 [7110937]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error refreshing context
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:47:12,034 [7147371]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error refreshing context
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:49:06,206 [7261543]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:49:13,790 [7269127]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:51:10,620 [7385957]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:53:26,556 [7521893]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2024-12-17 15:53:26,557 [7521894]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.class' has been deprecated in favor of 'resource.loader.includes.class'
+2024-12-17 15:54:13,921 [7569258]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:54:14,260 [7569597]   WARN - #com.codeium.intellij.language_server.LanguageServerService - Error getting completions
+io.grpc.StatusException: UNAVAILABLE: io exception
+	at io.grpc.Status.asException(Status.java:548)
+	at io.grpc.kotlin.ClientCalls$rpcImpl$1$1$1.onClose(ClientCalls.kt:300)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:564)
+	at io.grpc.internal.ClientCallImpl.access$100(ClientCallImpl.java:72)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:729)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:710)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.grpc.netty.shaded.io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused: /127.0.0.1:37289
+Caused by: java.net.ConnectException: finishConnect(..) failed: Connection refused
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.newConnectException0(Errors.java:166)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131)
+	at io.grpc.netty.shaded.io.netty.channel.unix.Socket.finishConnect(Socket.java:359)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:710)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:687)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:567)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.processReady(EpollEventLoop.java:499)
+	at io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoop.run(EpollEventLoop.java:407)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-12-17 15:56:50,740 [7726077]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 15:57:23,238 [7758575]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:01:08,985 [7984322]   WARN - #c.i.o.v.i.h.RemoteFileInfoImpl - Virtual local file not found for /home/gabriel/.cache/JetBrains/IdeaIC2024.3/httpFileSystem/catalog.json
+2024-12-17 16:01:17,956 [7993293]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:02:26,165 [8061502]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:24:13,765 [9369102]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+Opening in existing browser session.
+Opening in existing browser session.
+Opening in existing browser session.
+Opening in existing browser session.
+2024-12-17 16:26:41,878 [9517215]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:26:43,428 [9518765]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:26:46,794 [9522131]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:27:04,786 [9540123]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-12-17 16:27:05,388 [9540725]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2024-12-17 16:27:05,388 [9540725]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2024-12-17 16:27:09,102 [9544439]   WARN - #c.i.u.Alarm - Do not create alarm without coroutineScope: com.intellij.codeInsight.template.postfix.settings.PostfixTemplatesConfigurable.<init>(PostfixTemplatesConfigurable.java:54)
+2024-12-17 16:27:10,701 [9546038]   WARN - #c.i.i.p.n.PluginLogo - Cannot load plugin icon (file=/usr/share/idea/plugins/Groovy/lib/console.groovy/META-INF/pluginIcon.svg)
+java.nio.file.FileSystemException: /usr/share/idea/plugins/Groovy/lib/console.groovy/META-INF/pluginIcon.svg: Not a directory
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:100)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:261)
+	at java.base/java.nio.file.Files.newByteChannel(Files.java:379)
+	at java.base/java.nio.file.Files.newByteChannel(Files.java:431)
+	at java.base/java.nio.file.Files.readAllBytes(Files.java:3268)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.tryLoadIcon(PluginLogo.kt:340)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.tryLoadDirIcons(PluginLogo.kt:253)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.loadPluginIconsFromFile(PluginLogo.kt:236)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.access$loadPluginIconsFromFile(PluginLogo.kt:1)
+	at com.intellij.ide.plugins.newui.PluginLogoLoader$schedulePluginIconLoading$1$1.invokeSuspend(PluginLogo.kt:386)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.internal.SoftLimitedDispatcher$Worker.run(SoftLimitedDispatcher.kt:125)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:99)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:608)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:873)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:763)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:750)
+2024-12-17 16:27:10,701 [9546038]   WARN - #c.i.i.p.n.PluginLogo - Cannot load plugin icon (file=/usr/share/idea/plugins/Groovy/lib/console.groovy/META-INF/pluginIcon_dark.svg)
+java.nio.file.FileSystemException: /usr/share/idea/plugins/Groovy/lib/console.groovy/META-INF/pluginIcon_dark.svg: Not a directory
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:100)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:261)
+	at java.base/java.nio.file.Files.newByteChannel(Files.java:379)
+	at java.base/java.nio.file.Files.newByteChannel(Files.java:431)
+	at java.base/java.nio.file.Files.readAllBytes(Files.java:3268)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.tryLoadIcon(PluginLogo.kt:340)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.tryLoadDirIcons(PluginLogo.kt:254)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.loadPluginIconsFromFile(PluginLogo.kt:236)
+	at com.intellij.ide.plugins.newui.PluginLogoKt.access$loadPluginIconsFromFile(PluginLogo.kt:1)
+	at com.intellij.ide.plugins.newui.PluginLogoLoader$schedulePluginIconLoading$1$1.invokeSuspend(PluginLogo.kt:386)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.internal.SoftLimitedDispatcher$Worker.run(SoftLimitedDispatcher.kt:125)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:99)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:608)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:873)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:763)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:750)
+2024-12-17 16:27:18,730 [9554067]   WARN - #c.i.o.o.e.ConfigurableCardPanel - auto-dispose 'Plugins' id=preferences.pluginManager
+2024-12-17 16:28:39,509 [9634846]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, IncrementalSyncAction waltmann-api
+2024-12-17 16:28:39,534 [9634871]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, IncrementalSyncAction waltmann-api
+2024-12-17 16:28:45,415 [9640752]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:28:51,078 [9646415]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:31:49,171 [9824508]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:31:49,806 [9825143]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:34:40,476 [9995813]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:34:41,165 [9996502]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:34:47,499 [10002836]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:49:05,445 [10860782]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:49:06,434 [10861771]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:49:09,637 [10864974]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-17 16:49:59,742 [10915079]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-12-17 16:50:11,506 [10926843]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2024-12-17 16:50:11,721 [10927058]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2024-12-17 16:50:12,015 [10927352]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2024-12-17 16:50:41,893 [10957230]   WARN - #c.i.o.o.e.ConfigurableCardPanel - auto-dispose 'Plugins' id=preferences.pluginManager
+2024-12-17 16:51:18,260 [10993597]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:51:20,444 [10995781]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:51:42,286 [11017623]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:51:42,522 [11017859]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:53:11,503 [11106840]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:53:11,919 [11107256]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-17 16:53:15,313 [11110650]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:36:44,096 [56919433]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:36:44,933 [56920270]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:38:29,214 [57024551]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:38:29,876 [57025213]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:38:37,407 [57032744]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:39:04,882 [57060219]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-12-18 05:39:10,029 [57065366]   WARN - #c.i.o.o.e.ConfigurableCardPanel - auto-dispose 'Plugins' id=preferences.pluginManager
+2024-12-18 05:39:12,513 [57067850]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2024-12-18 05:39:30,477 [57085814]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:39:49,862 [57105199]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-12-18 05:39:51,437 [57106774]   WARN - #c.i.o.o.e.ConfigurableCardPanel - auto-dispose 'Plugins' id=preferences.pluginManager
+2024-12-18 05:40:13,428 [57128765]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:40:31,745 [57147082]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:40:52,990 [57168327]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-12-18 05:43:18,882 [57314219]   WARN - #c.i.o.o.e.ConfigurableCardPanel - auto-dispose 'Plugins' id=preferences.pluginManager
+Opening in existing browser session.
+2024-12-18 05:50:02,587 [57717924]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:50:04,425 [57719762]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:50:09,640 [57724977]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:51:03,030 [57778367]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2024-12-18 05:51:07,343 [57782680]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:51:08,174 [57783511]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 waltmann-api
+2024-12-18 05:51:12,146 [57787483]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
