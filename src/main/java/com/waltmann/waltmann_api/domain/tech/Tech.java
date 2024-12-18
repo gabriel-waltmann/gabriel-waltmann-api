@@ -1,9 +1,14 @@
 package com.waltmann.waltmann_api.domain.tech;
+import com.waltmann.waltmann_api.domain.file.File;
+import com.waltmann.waltmann_api.domain.link.Link;
+import com.waltmann.waltmann_api.domain.project.Project;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 import java.util.UUID;
@@ -22,14 +27,16 @@ public class Tech {
     private String name;
 
     @OneToOne
-    @JoinColumn(name="file_id")
-    private int file_id;
+    @JoinColumn(name = "link_id")
+    private Link link;
 
     @OneToOne
-    @JoinColumn(name = "link_id")
-    private int link_id;
+    @JoinColumn(name = "file_id")
+    private File file;
 
+    @Column(name = "updated_at") @UpdateTimestamp
     private Date updated_at;
 
+    @Column(name = "created_at") @CreationTimestamp
     private Date created_at;
 }

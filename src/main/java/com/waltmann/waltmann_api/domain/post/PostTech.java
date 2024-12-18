@@ -1,12 +1,19 @@
 package com.waltmann.waltmann_api.domain.post;
 
 
+import com.waltmann.waltmann_api.domain.file.File;
+import com.waltmann.waltmann_api.domain.tech.Tech;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,12 +27,17 @@ public class PostTech {
     @GeneratedValue
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "tech_id")
-    private int tech_id;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "post_id")
-    private int post_id;
+    private Post post;
 
+    @OneToOne
+    @JoinColumn(name = "tech_id")
+    private Tech tech;
+
+    @Column(name = "updated_at") @UpdateTimestamp
+    private Date updated_at;
+
+    @Column(name = "created_at") @CreationTimestamp
+    private Date created_at;
 }
