@@ -1,6 +1,6 @@
 package com.waltmann.waltmann_api.controller;
 
-import com.waltmann.waltmann_api.domain.Tech;
+import com.waltmann.waltmann_api.domain.tech.Tech;
 import com.waltmann.waltmann_api.service.TechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

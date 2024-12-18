@@ -1,6 +1,6 @@
 package com.waltmann.waltmann_api.service;
 
-import com.waltmann.waltmann_api.domain.Tech;
+import com.waltmann.waltmann_api.domain.tech.Tech;
 import org.springframework.stereotype.Service;
 
 @Service
