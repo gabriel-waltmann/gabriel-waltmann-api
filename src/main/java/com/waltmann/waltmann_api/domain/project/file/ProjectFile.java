@@ -1,7 +1,7 @@
-package com.waltmann.waltmann_api.domain.project;
+package com.waltmann.waltmann_api.domain.project.file;
 
 import com.waltmann.waltmann_api.domain.file.File;
-import com.waltmann.waltmann_api.domain.post.Post;
+import com.waltmann.waltmann_api.domain.project.Project;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "techs")
+@Table(name = "project_files")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class ProjectFile {
     @GeneratedValue
     private UUID id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
