@@ -5,6 +5,7 @@ import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
 import com.waltmann.waltmann_api.service.project.file.ProjectFileService;
+import com.waltmann.waltmann_api.service.project.tech.ProjectTechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,9 @@ public class ProjectService {
   @Autowired
   private ProjectFileService projectFileService;
 
+  @Autowired
+  private ProjectTechService projectTechService;
+
   public Project create(ProjectRequestDTO data) {
     Project project = new Project();
 
@@ -32,19 +36,6 @@ public class ProjectService {
     project.setDescription(data.description());
 
     repository.save(project);
-
-//    List<ProjectFile> files = new ArrayList<ProjectFile>();
-//    if (data.images() != null) {
-//      for (MultipartFile multipartFile : data.images()) {
-//        File file = fileService.create(multipartFile);
-//
-//        System.out.println(project.getId() + ": " + file.getId());
-//
-//        ProjectFile projectFile = projectFileService.create(project, file);
-//
-//        files.add(projectFile);
-//      }
-//    }
 
     return project;
   }
@@ -76,9 +67,11 @@ public class ProjectService {
     return project;
   }
 
-  public Boolean delete(UUID id) {
-    repository.deleteById(id);
+  public void delete(UUID id) {
+    projectFileService.delete(id);
 
-    return true;
+    projectTechService.delete(id);
+
+    repository.deleteById(id);
   }
 }

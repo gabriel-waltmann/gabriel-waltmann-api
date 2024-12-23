@@ -1,4 +1,4 @@
-package com.waltmann.waltmann_api.controller.project;
+package com.waltmann.waltmann_api.controller.project.file;
 
 import com.waltmann.waltmann_api.domain.project.file.ProjectFile;
 import com.waltmann.waltmann_api.service.project.file.ProjectFileService;
@@ -32,9 +32,9 @@ public class ProjectFileController {
       @PathVariable UUID projectId,
       @PathVariable UUID id
   ) {
-    Boolean deleted = projectFileService.delete(id, projectId);
+    projectFileService.deleteOne(id, projectId);
 
-    return ResponseEntity.ok(deleted);
+    return ResponseEntity.ok(true);
   }
 
   @GetMapping

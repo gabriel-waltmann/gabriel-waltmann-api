@@ -53,7 +53,7 @@ public class ProjectFileService {
     return projectFiles.stream().toList();
   }
 
-  public Boolean delete(UUID id, UUID projectId) {
+  public void deleteOne(UUID id, UUID projectId) {
     ProjectFile projectFile = retrievesOne(id, projectId);
 
     if (projectFile == null) {
@@ -70,7 +70,13 @@ public class ProjectFileService {
     fileService.delete(fileId);
 
     repository.delete(projectFile);
+  }
 
-    return true;
+  public void delete(UUID projectId) {
+    List<ProjectFile> projectFiles = repository.findByProjectId(projectId);
+
+    for (ProjectFile projectFile : projectFiles) {
+      deleteOne(projectFile.getId(), projectId);
+    }
   }
 }
