@@ -1,4 +1,4 @@
-package com.waltmann.waltmann_api.repositories.project;
+package com.waltmann.waltmann_api.repositories.project.file;
 
 import com.waltmann.waltmann_api.domain.project.file.ProjectFile;
 import org.springframework.data.jpa.repository.JpaRepository;

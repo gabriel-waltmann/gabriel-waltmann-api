@@ -26,11 +26,11 @@ public class Tech {
 
     private String name;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "link_id")
     private Link link;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
     private File file;
 

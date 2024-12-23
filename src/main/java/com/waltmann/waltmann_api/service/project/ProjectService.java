@@ -4,6 +4,7 @@ import com.waltmann.waltmann_api.domain.project.Project;
 import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
+import com.waltmann.waltmann_api.service.project.file.ProjectFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

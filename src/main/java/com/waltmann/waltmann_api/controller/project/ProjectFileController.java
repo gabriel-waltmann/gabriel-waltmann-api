@@ -1,11 +1,7 @@
 package com.waltmann.waltmann_api.controller.project;
 
-import com.waltmann.waltmann_api.domain.file.File;
-import com.waltmann.waltmann_api.domain.project.Project;
 import com.waltmann.waltmann_api.domain.project.file.ProjectFile;
-import com.waltmann.waltmann_api.domain.project.file.ProjectFileRequestDTO;
-import com.waltmann.waltmann_api.domain.project.file.ProjectFileResponseDTO;
-import com.waltmann.waltmann_api.service.project.ProjectFileService;
+import com.waltmann.waltmann_api.service.project.file.ProjectFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
