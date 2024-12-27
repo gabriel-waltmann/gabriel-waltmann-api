@@ -38,13 +38,13 @@ jobs:
               run: mvn clean install
 
             - name: Login to docker hub
-              run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+              run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Build docker image
-              run: docker build -t gabrielwaltmann/waltmann_api:latest .
+              run: sudo docker build -t gabrielwaltmann/waltmann_api:latest .
 
             - name: Push docker image
-              run: docker push gabrielwaltmann/waltmann_api
+              run: sudo docker push gabrielwaltmann/waltmann_api
 
     deploy:
       needs: build
