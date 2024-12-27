@@ -10,6 +10,7 @@ class WaltmannApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.setProperty("AWS_REGION", "us-east-1");
 	}
 
 }

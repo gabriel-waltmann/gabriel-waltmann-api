@@ -24,6 +24,7 @@ public class Link {
 
     private String name;
 
+    @Column(name = "`key`")
     private String key;
 
     @Column(name = "updated_at") @UpdateTimestamp

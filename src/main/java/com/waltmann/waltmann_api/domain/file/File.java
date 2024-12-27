@@ -24,6 +24,7 @@ public class File {
 
     private String name;
 
+    @Column(name = "`key`")
     private String key;
 
     @Column(name = "updated_at") @UpdateTimestamp
