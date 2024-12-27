@@ -41,7 +41,6 @@ public class TechController {
         Tech tech = techService.create(name, linkName, linkKey, file);
 
         return ResponseEntity.ok(tech);
-
     }
 
     @PutMapping("/{id}")
