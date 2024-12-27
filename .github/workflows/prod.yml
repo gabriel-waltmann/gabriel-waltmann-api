@@ -31,3 +31,14 @@ jobs:
 
             - name: Push docker image
               run: docker push gabrielwaltmann/waltmann_api
+
+    deploy:
+      needs: build
+      runs-on: self-hosted
+
+      steps:
+        - name: Pull docker image
+          run: docker pull gabrielwaltmann/waltmann_api:latest
+
+        - name: Run docker container
+          run: docker run -d -p 8080:8080 -e PORT='${{secrets.PORT}}' -e DB_URL='${{secrets.DB_URL}}' -e DB_USER='${{secrets.DB_USER}}' -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' -e AWS_REGION='${{secrets.AWS_REGION}}' -e AWS_BUCKET_NAME='${{secrets.AWS_BUCKET_NAME}}' --name waltmann_api gabrielwaltmann/waltmann_api
