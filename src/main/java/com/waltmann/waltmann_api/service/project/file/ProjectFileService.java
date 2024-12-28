@@ -25,10 +25,14 @@ public class ProjectFileService {
   private FileService fileService;
 
   public ProjectFile create(UUID projectId, MultipartFile multipartFile) {
-    File file = fileService.create(multipartFile);
-
     Project project = projectRepository.findById(projectId)
         .orElseThrow(() -> new RuntimeException("Project not found"));
+
+    if (multipartFile == null) {
+      throw new RuntimeException("File not found");
+    }
+
+    File file = fileService.create(multipartFile);
 
     ProjectFile projectFile = new ProjectFile();
 
@@ -41,23 +45,30 @@ public class ProjectFileService {
   }
 
   public ProjectFile retrievesOne(UUID id, UUID projectId) {
-    Project project = projectRepository.findById(projectId)
+    projectRepository.findById(projectId)
         .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    return repository.findById(id).orElse(null);
+    return repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Project file not found"));
   }
 
   public List<ProjectFile> retrieves(UUID projectId) {
+    projectRepository.findById(projectId)
+        .orElseThrow(() -> new RuntimeException("Project not found"));
+
     List<ProjectFile> projectFiles = repository.findByProjectId(projectId);
 
     return projectFiles.stream().toList();
   }
 
   public void deleteOne(UUID id, UUID projectId) {
+    projectRepository.findById(projectId)
+        .orElseThrow(() -> new RuntimeException("Project not found"));
+
     ProjectFile projectFile = retrievesOne(id, projectId);
 
     if (projectFile == null) {
-      throw new RuntimeException("ProjectFile not found");
+      throw new RuntimeException("Project file not found");
     }
 
     UUID fileId = projectFile.getFile().getId();
@@ -73,6 +84,9 @@ public class ProjectFileService {
   }
 
   public void delete(UUID projectId) {
+    projectRepository.findById(projectId)
+        .orElseThrow(() -> new RuntimeException("Project not found"));
+
     List<ProjectFile> projectFiles = repository.findByProjectId(projectId);
 
     for (ProjectFile projectFile : projectFiles) {
