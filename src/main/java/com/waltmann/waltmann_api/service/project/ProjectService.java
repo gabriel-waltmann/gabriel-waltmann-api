@@ -21,15 +21,20 @@ public class ProjectService {
   private ProjectRepository repository;
 
   @Autowired
-  private FileService fileService;
-
-  @Autowired
   private ProjectFileService projectFileService;
 
   @Autowired
   private ProjectTechService projectTechService;
 
   public Project create(ProjectRequestDTO data) {
+    if (data.title() == null || data.description() == null) {
+      throw new RuntimeException("Invalid data");
+    }
+
+    if (data.title().isEmpty() || data.description().isEmpty()) {
+      throw new RuntimeException("Invalid data");
+    }
+
     Project project = new Project();
 
     project.setTitle(data.title());
@@ -49,14 +54,28 @@ public class ProjectService {
   }
 
   public Project retrievesOne(UUID id) {
-    return repository.findById(id).orElse(null);
+    Project project = repository.findById(id).orElse(null);
+
+    if (project == null) {
+      throw new RuntimeException("Project not found");
+    }
+
+    return project;
   }
 
   public Project update(UUID id, ProjectRequestDTO data) {
     Project project = repository.findById(id).orElse(null);
 
     if (project == null) {
-      return null;
+      throw new RuntimeException("Project not found");
+    }
+
+    if (data.title() == null || data.description() == null) {
+      throw new RuntimeException("Invalid data");
+    }
+
+    if (data.title().isEmpty() || data.description().isEmpty()) {
+      throw new RuntimeException("Invalid data");
     }
 
     project.setTitle(data.title());
@@ -68,6 +87,12 @@ public class ProjectService {
   }
 
   public void delete(UUID id) {
+    Project project = repository.findById(id).orElse(null);
+
+    if (project == null) {
+      throw new RuntimeException("Project not found");
+    }
+
     projectFileService.delete(id);
 
     projectTechService.delete(id);
