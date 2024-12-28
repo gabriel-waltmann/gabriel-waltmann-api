@@ -1,14 +1,13 @@
-package com.waltmann.waltmann_api.service.project.file;
+package com.waltmann.waltmann_api.service.project.tech;
 
-import com.waltmann.waltmann_api.domain.file.File;
+import com.waltmann.waltmann_api.domain.tech.Tech;
 import com.waltmann.waltmann_api.domain.project.Project;
 import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
-import com.waltmann.waltmann_api.domain.project.file.ProjectFile;
-import com.waltmann.waltmann_api.repositories.file.FileRepository;
+import com.waltmann.waltmann_api.domain.project.tech.ProjectTech;
+import com.waltmann.waltmann_api.repositories.tech.TechRepository;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
-import com.waltmann.waltmann_api.repositories.project.file.ProjectFileRepository;
-import com.waltmann.waltmann_api.service.file.FileService;
-import com.waltmann.waltmann_api.service.project.ProjectService;
+import com.waltmann.waltmann_api.repositories.project.tech.ProjectTechRepository;
+import com.waltmann.waltmann_api.service.tech.TechService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,22 +25,22 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
-class ProjectFileServiceTest {
+class ProjectTechServiceTest {
   @Mock
-  private ProjectFileRepository repository;
+  private ProjectTechRepository repository;
 
   @Autowired
   @InjectMocks
-  private ProjectFileService service;
+  private ProjectTechService service;
 
   @Mock
   private ProjectRepository projectRepository;
 
   @Mock
-  private FileService fileService;
+  private TechService techService;
 
   @Mock
-  private FileRepository fileRepository;
+  private TechRepository techRepository;
 
   @BeforeEach
   void setUp() {
@@ -51,67 +48,59 @@ class ProjectFileServiceTest {
   }
 
   @Test
-  @DisplayName("Should create project file successfully when data is valid")
+  @DisplayName("Should create project tech successfully when data is valid")
   void createSuccess() {
     Project project = new Project();
-    File file = new File();
-    MultipartFile multipartFile =new MockMultipartFile(
-        "file",                     // Name of the parameter in the request
-        "testfile.txt",             // Original filename
-        "text/plain",               // Content type
-        "This is a test file.".getBytes() // File content
-    ) ;
+    Tech tech = new Tech();
 
-    ProjectFile projectFile = new ProjectFile();
-    projectFile.setProject(project);
-    projectFile.setFile(file);
-
+    ProjectTech projectTech = new ProjectTech();
+    projectTech.setProject(project);
+    projectTech.setTech(tech);
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-    when(fileRepository.findById(file.getId())).thenReturn(Optional.of(file));
-    when(repository.save(projectFile)).thenReturn(projectFile);
+    when(techRepository.findById(tech.getId())).thenReturn(Optional.of(tech));
+    when(repository.save(projectTech)).thenReturn(projectTech);
 
-    ProjectFile result = service.create(project.getId(), multipartFile);
+    ProjectTech result = service.create(project.getId(), tech.getId());
 
     assertThat(result).isNotNull();
   }
 
   @Test
-  @DisplayName("Should throw exception when file is not valid")
-  void createFailInvalidData() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1",
-        "Description 1"
-    );
+  @DisplayName("Should throw exception when tech id is not valid")
+  void createFailInvalidTechId() {
+    UUID techId = UUID.randomUUID();
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+    Project project = new Project();
 
-    when(projectRepository.save(project1)).thenReturn(project1);
-    when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
+    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
     Exception thrown = Assertions.assertThrows(
         RuntimeException.class,
-        () -> service.create(project1.getId(), null)
+        () -> service.create(techId, project.getId())
     );
 
-    Assertions.assertEquals("File not found", thrown.getMessage());
+    Assertions.assertEquals("Tech not found", thrown.getMessage());
   }
 
   @Test
   @DisplayName("Should throw exception when project id is not valid")
   void createFailInvalidProjectId() {
+    UUID projectId = UUID.randomUUID();
+
+    Tech tech = new Tech();
+
+    when(techRepository.findById(tech.getId())).thenReturn(Optional.of(tech));
     Exception thrown = Assertions.assertThrows(
         RuntimeException.class,
-        () -> service.create(UUID.randomUUID(), null)
+        () -> service.create(tech.getId(), projectId)
     );
 
     Assertions.assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
-  @DisplayName("Should retrieve project file successfully when data is valid")
+  @DisplayName("Should retrieve project tech successfully when data is valid")
   void retrievesOneSuccess() {
     ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
         "Project 1",
@@ -122,13 +111,13 @@ class ProjectFileServiceTest {
     project1.setTitle(projectRequestDTO.title());
     project1.setDescription(projectRequestDTO.description());
 
-    ProjectFile projectFile1 = new ProjectFile();
-    projectFile1.setProject(project1);
+    ProjectTech projectTech1 = new ProjectTech();
+    projectTech1.setProject(project1);
 
-    when(repository.findById(projectFile1.getId())).thenReturn(Optional.of(projectFile1));
+    when(repository.findById(projectTech1.getId())).thenReturn(Optional.of(projectTech1));
     when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
 
-    assertThat(service.retrievesOne(projectFile1.getId(), project1.getId())).isNotNull();
+    assertThat(service.retrievesOne(projectTech1.getId(), project1.getId())).isNotNull();
   }
 
   @Test
@@ -159,29 +148,29 @@ class ProjectFileServiceTest {
         () -> service.retrievesOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project file not found", thrown.getMessage());
+    Assertions.assertEquals("Project tech not found", thrown.getMessage());
   }
 
   @Test
-  @DisplayName("Should retrieve project files successfully when data is valid")
+  @DisplayName("Should retrieve project techs successfully when data is valid")
   void retrievesSuccess() {
     Project project = new Project();
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
-    List<ProjectFile> projectFiles = new ArrayList<ProjectFile>();
+    List<ProjectTech> projectTechs = new ArrayList<ProjectTech>();
 
-    ProjectFile projectFile1 = new ProjectFile();
-    projectFile1.setProject(project);
-    projectFiles.add(projectFile1);
+    ProjectTech projectTech1 = new ProjectTech();
+    projectTech1.setProject(project);
+    projectTechs.add(projectTech1);
 
-    ProjectFile projectFile2 = new ProjectFile();
-    projectFile2.setProject(project);
-    projectFiles.add(projectFile2);
+    ProjectTech projectTech2 = new ProjectTech();
+    projectTech2.setProject(project);
+    projectTechs.add(projectTech2);
 
-    when(repository.findByProjectId(projectFile1.getProject().getId())).thenReturn(projectFiles);
+    when(repository.findByProjectId(projectTech1.getProject().getId())).thenReturn(projectTechs);
 
-    assertThat(service.retrieves(projectFile1.getProject().getId())).isNotNull();
+    assertThat(service.retrieves(projectTech1.getProject().getId())).isNotNull();
   }
 
   @Test
@@ -198,19 +187,19 @@ class ProjectFileServiceTest {
   }
 
   @Test
-  @DisplayName("Should delete project file successfully when data is valid")
+  @DisplayName("Should delete project tech successfully when data is valid")
   void deleteOneSuccess() {
     Project project = new Project();
-    File file = new File();
-    ProjectFile projectFile = new ProjectFile();
-    projectFile.setProject(project);
-    projectFile.setFile(file);
+    Tech tech = new Tech();
+    ProjectTech projectTech = new ProjectTech();
+    projectTech.setProject(project);
+    projectTech.setTech(tech);
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-    when(fileService.retrievesOne(projectFile.getFile().getId())).thenReturn(file);
-    when(repository.findById(projectFile.getId())).thenReturn(Optional.of(projectFile));
+    when(techService.retrievesOne(projectTech.getTech().getId())).thenReturn(tech);
+    when(repository.findById(projectTech.getId())).thenReturn(Optional.of(projectTech));
 
-    service.deleteOne(projectFile.getId(), project.getId());
+    service.deleteOne(projectTech.getId(), project.getId());
   }
 
   @Test
@@ -226,7 +215,7 @@ class ProjectFileServiceTest {
         () -> service.deleteOne(id, project.getId())
     );
 
-    Assertions.assertEquals("Project file not found", thrown.getMessage());
+    Assertions.assertEquals("Project tech not found", thrown.getMessage());
   }
 
   @Test
@@ -244,7 +233,7 @@ class ProjectFileServiceTest {
   }
 
   @Test
-  @DisplayName("Should delete project files successfully")
+  @DisplayName("Should delete project techs successfully")
   void deleteSuccess() {
     Project project = new Project();
 

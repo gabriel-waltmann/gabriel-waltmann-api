@@ -5,6 +5,7 @@ import com.waltmann.waltmann_api.domain.project.tech.ProjectTech;
 import com.waltmann.waltmann_api.domain.tech.Tech;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.repositories.project.tech.ProjectTechRepository;
+import com.waltmann.waltmann_api.repositories.tech.TechRepository;
 import com.waltmann.waltmann_api.service.tech.TechService;
 import com.waltmann.waltmann_api.service.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,17 @@ public class ProjectTechService {
   private ProjectRepository projectRepository;
 
   @Autowired
+  private TechRepository techRepository;
+
+  @Autowired
   private TechService techService;
 
-  public ProjectTech create(UUID projectId, UUID techId) {
+  public ProjectTech create(UUID techId, UUID projectId) {
     Project project = projectRepository.findById(projectId)
         .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    if (project == null) {
-      throw new RuntimeException("Project not found");
-    }
-
-    Tech tech = techService.retrievesOne(techId);
+    Tech tech = techRepository.findById(techId)
+        .orElseThrow(() -> new RuntimeException("Tech not found"));
 
     ProjectTech projectTech = new ProjectTech();
     projectTech.setProject(project);
@@ -54,17 +55,24 @@ public class ProjectTechService {
     projectRepository.findById(projectId)
         .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    return repository.findById(id).orElse(null);
+    return repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Project tech not found"));
   }
 
   public void deleteOne(UUID id, UUID projectId) {
     projectRepository.findById(projectId)
         .orElseThrow(() -> new RuntimeException("Project not found"));
 
+    repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Project tech not found"));
+
     repository.deleteById(id);
   }
 
   public void delete(UUID projectId) {
+    projectRepository.findById(projectId)
+        .orElseThrow(() -> new RuntimeException("Project not found"));
+
     List<ProjectTech> projectTechs = repository.findByProjectId(projectId);
 
     for (ProjectTech projectTech : projectTechs) {
