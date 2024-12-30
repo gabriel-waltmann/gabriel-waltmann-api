@@ -3,17 +3,21 @@ package com.waltmann.waltmann_api.repositories.project.file;
 import com.waltmann.waltmann_api.domain.file.File;
 import com.waltmann.waltmann_api.domain.project.Project;
 import com.waltmann.waltmann_api.domain.project.file.ProjectFile;
-import com.waltmann.waltmann_api.repositories.project.tech.ProjectTechRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+@ActiveProfiles("test")
 class ProjectFileRepositoryTest {
 
   @Autowired
