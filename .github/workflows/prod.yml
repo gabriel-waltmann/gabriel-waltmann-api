@@ -3,23 +3,12 @@ name: Deploy Application
 on:
     push:
         branches:
-            - main
+          - main
 
 jobs:
     build:
         name: Build Application
         runs-on: ubuntu-latest
-
-        env:
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-            DB_URL: ${{ secrets.DB_URL }}
-            DB_USERNAME: ${{ secrets.DB_USERNAME }}
-            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-            DB_NAME: ${{ secrets.DB_NAME }}
-            PORT: ${{ secrets.PORT }}
 
         steps:
             - name: Checkout code
@@ -47,23 +36,16 @@ jobs:
       needs: build
       runs-on: self-hosted
 
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-        DB_URL: ${{ secrets.DB_URL }}
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        PORT: ${{ secrets.PORT }}
-
       steps:
         - name: Pull docker image
           run: docker pull gabrielwaltmann/waltmann_api:latest
 
         - name: Remove old docker container if exists
           run: docker rm -f waltmann_api
+
+        - name: Show environment variables values
+          run: 
+            echo "PORT=${{secrets.PORT}}" && echo "DB_URL=${{secrets.DB_URL}}" && echo "DB_USER=${{secrets.DB_USER}}" && echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}" && echo "AWS_REGION=${{secrets.AWS_REGION}}" && echo "AWS_BUCKET_NAME=${{secrets.AWS_BUCKET_NAME}}"
 
         - name: Run docker container
           run: docker run -d -p 8080:8080 -e PORT='${{secrets.PORT}}' -e DB_URL='${{secrets.DB_URL}}' -e DB_USER='${{secrets.DB_USER}}' -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' -e AWS_REGION='${{secrets.AWS_REGION}}' -e AWS_BUCKET_NAME='${{secrets.AWS_BUCKET_NAME}}' --name waltmann_api gabrielwaltmann/waltmann_api
