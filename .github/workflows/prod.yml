@@ -43,9 +43,5 @@ jobs:
         - name: Remove old docker container if exists
           run: docker rm -f waltmann_api
 
-        - name: Show environment variables values
-          run: 
-            echo "PORT=${{secrets.PORT}}" && echo "DB_URL=${{secrets.DB_URL}}" && echo "DB_USER=${{secrets.DB_USER}}" && echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}" && echo "AWS_REGION=${{secrets.AWS_REGION}}" && echo "AWS_BUCKET_NAME=${{secrets.AWS_BUCKET_NAME}}"
-
         - name: Run docker container
           run: docker run -d -p 8080:8080 -e PORT='${{secrets.PORT}}' -e DB_URL='${{secrets.DB_URL}}' -e DB_USER='${{secrets.DB_USER}}' -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' -e AWS_REGION='${{secrets.AWS_REGION}}' -e AWS_BUCKET_NAME='${{secrets.AWS_BUCKET_NAME}}' --name waltmann_api gabrielwaltmann/waltmann_api
