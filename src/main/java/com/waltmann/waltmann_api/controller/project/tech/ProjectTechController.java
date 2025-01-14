@@ -20,7 +20,7 @@ public class ProjectTechController {
       @PathVariable UUID projectId,
       @RequestParam UUID techId
   ) {
-    ProjectTech projectTech = projectService.create(projectId, techId);
+    ProjectTech projectTech = projectService.create(techId, projectId);
 
     return ResponseEntity.ok(projectTech);
   }
