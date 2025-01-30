@@ -1,47 +1,46 @@
-name: Deploy Application
+name: Build with maven, push to docker hub and deploy at VPS
 
 on:
-    push:
-        branches:
-          - main
+  push:
+    branches:
+      - main
 
 jobs:
-    build:
-        name: Build Application
-        runs-on: ubuntu-latest
+  build-push-and-deploy:
+    name: Build with maven, push to docker hub and deploy at VPS
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-            - name: Setup Java
-              uses: actions/setup-java@v3
-              with:
-                  java-version: '17'
-                  distribution: 'temurin'
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+            java-version: '17'
+            distribution: 'temurin'
 
-            - name: Build with Maven
-              run: mvn clean install
+      - name: Build with Maven
+        run: mvn clean install
 
-            - name: Login to docker hub
-              run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to docker hub
+        run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-            - name: Build docker image
-              run: sudo docker build -t gabrielwaltmann/waltmann_api:latest .
+      - name: Build docker image
+        run: sudo docker build -t gabrielwaltmann/waltmann_api:latest .
 
-            - name: Push docker image
-              run: sudo docker push gabrielwaltmann/waltmann_api
+      - name: Push docker image
+        run: sudo docker push gabrielwaltmann/waltmann_api
 
-    deploy:
-      needs: build
-      runs-on: self-hosted
-
-      steps:
-        - name: Pull docker image
-          run: docker pull gabrielwaltmann/waltmann_api:latest
-
-        - name: Remove old docker container if exists
-          run: docker rm -f waltmann_api
-
-        - name: Run docker container
-          run: docker run -d -p 8080:8080 -e PORT='${{secrets.PORT}}' -e DB_URL='${{secrets.DB_URL}}' -e DB_USER='${{secrets.DB_USER}}' -e DB_PASSWORD='${{secrets.DB_PASSWORD}}' -e AWS_REGION='${{secrets.AWS_REGION}}' -e AWS_BUCKET_NAME='${{secrets.AWS_BUCKET_NAME}}' --name waltmann_api gabrielwaltmann/waltmann_api
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSWORD }}
+          script: |
+            cd ~/gabrielwaltmann
+            docker-compose pull waltmann-backend
+            docker compose down waltmann-backend
+            docker compose up -d --no-deps waltmann-backend
