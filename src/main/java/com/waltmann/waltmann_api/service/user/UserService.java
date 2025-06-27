@@ -1,7 +1,7 @@
 package com.waltmann.waltmann_api.service.user;
 
 import com.waltmann.waltmann_api.domain.user.User;
-import com.waltmann.waltmann_api.domain.user.UserRequestDTO;
+import com.waltmann.waltmann_api.domain.user.UserRegisterDTO;
 import com.waltmann.waltmann_api.exceptions.DuplicateException;
 import com.waltmann.waltmann_api.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User create(UserRequestDTO data) {
+    public User register(UserRegisterDTO data) {
         String name = data.name();
         String email = data.email();
         String password = data.password();
