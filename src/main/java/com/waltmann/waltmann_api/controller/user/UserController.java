@@ -24,7 +24,7 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-    
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody UserRegisterDTO body) {
         User user = this.userService.register(body);
