@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class JwtHelper {
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.ES256);
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Use HS256 for HMAC
     private static final int MINUTES = 60;
 
     public static String generateToken(String email) {
