@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Key;
 import java.time.Instant;
@@ -33,10 +34,10 @@ public class JwtHelper {
         return getTokenBody(token).getSubject();
     }
 
-    public static Boolean validateToken(String token, User user) {
+    public static Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
 
-        return username.equals(user.getName()) && !isTokenExpired(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private static Claims getTokenBody(String token) {
