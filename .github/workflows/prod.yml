@@ -27,7 +27,7 @@ jobs:
         run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build docker image
-        run: sudo docker build -t gabrielwaltmann/waltmann_api:latest .
+        run: sudo docker build -f .docker/Dockerfile.prod -t gabrielwaltmann/waltmann_api:latest .
 
       - name: Push docker image
         run: sudo docker push gabrielwaltmann/waltmann_api
