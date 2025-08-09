@@ -14,7 +14,7 @@ public class SwaggerConfig {
         .info(
             new Info()
                 .title("Waltmann API")
-                .version("1.0")
+                .version("1.0.3")
                 .description("Documentation for Waltmann API")
                 .license(new License().name("Apache 2.0").url("http://springdoc.org"))
         );
