@@ -6,4 +6,4 @@ COPY target/waltmann-api-1.0.3.jar waltmann-api-1.0.3.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "waltmann-api-1.0.0.jar"]
+CMD ["java", "-jar", "waltmann-api-1.0.3.jar"]
