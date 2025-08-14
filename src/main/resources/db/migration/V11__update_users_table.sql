@@ -1,0 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+ALTER TABLE users
+ADD COLUMN phone_number VARCHAR(15),
+ADD COLUMN title VARCHAR(50),
+ADD COLUMN about TEXT,
+ADD COLUMN profile_file_id UUID;
