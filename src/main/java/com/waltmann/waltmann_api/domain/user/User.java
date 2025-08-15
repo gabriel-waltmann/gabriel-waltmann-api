@@ -39,9 +39,6 @@ public class User {
     @Column(name = "about")
     private String about;
 
-    @Column(name = "profile_file_id")
-    private UUID profile_file_id;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_file_id")
     private File profileFile;
