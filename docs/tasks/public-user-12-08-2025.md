@@ -1,5 +1,7 @@
 ### public user
 
+- [X] Any /public route should be accessible without authentication
+
 - [ ] Should update user (name, email, title, about, phone, profile file)
     - [ ] PUT /user
 
@@ -22,4 +24,4 @@
     - DELETE /user/link/UUID
     
 - [ ] Should return publicly the user (name, email, title, about, phone, profile file, projects, techs, links)
-    - [ ] GET /public/user
+    - [X] GET /public/user

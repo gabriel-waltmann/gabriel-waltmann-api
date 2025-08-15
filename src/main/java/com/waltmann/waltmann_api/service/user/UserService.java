@@ -9,13 +9,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository repository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public User retrievesOne(UUID id) {
+        return repository.findById(id).orElse(null);
+    }
 
     public User register(UserRegisterDTO data) {
         String name = data.name();
