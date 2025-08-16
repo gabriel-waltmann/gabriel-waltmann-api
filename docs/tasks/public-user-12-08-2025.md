@@ -10,12 +10,21 @@
 
 - [ ] Should bind the tech and user
     - [X] POST /user/tech
+
+- [ ] Should bind the link and user
+  - POST /user/link
+
+- [ ] Should retrieves user publicly
+  - [X] GET /public/user
   
 - [ ] Should retrieves all user projects publicly
     - [X] GET /public/user/{UUID}/project
 
-- [ ] Should bind the link and user
-    - POST /user/link
+- [ ] Should retrieves all user techs publicly
+  - [X] GET /public/user/{UUID}/tech
+
+- [ ] Should retrieves all user links publicly
+  - [ ] GET /public/user/{UUID}/link
 
 - [ ] Should unbind the project and user
     - DELETE /user/project/UUID
@@ -25,6 +34,3 @@
 
 - [ ] Should unbind the link and user
     - DELETE /user/link/UUID
-    
-- [ ] Should return publicly the user (name, email, title, about, phone, profile file, projects, techs, links)
-    - [X] GET /public/user

@@ -2,9 +2,11 @@ package com.waltmann.waltmann_api.service.user;
 
 import com.waltmann.waltmann_api.domain.file.File;
 import com.waltmann.waltmann_api.domain.user.User;
+import com.waltmann.waltmann_api.domain.user.link.UserLink;
 import com.waltmann.waltmann_api.domain.user.project.UserProject;
 import com.waltmann.waltmann_api.domain.user.tech.UserTech;
 import com.waltmann.waltmann_api.repositories.user.UserRepository;
+import com.waltmann.waltmann_api.repositories.user.link.UserLinkRepository;
 import com.waltmann.waltmann_api.repositories.user.project.UserProjectRepository;
 import com.waltmann.waltmann_api.repositories.user.tech.UserTechRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
@@ -27,6 +29,9 @@ public class UserService {
     private UserTechRepository  userTechRepository;
 
     @Autowired
+    private UserLinkRepository userLinkRepository;
+
+    @Autowired
     FileService fileService;
 
     public User retrievesOne(UUID userId) {
@@ -46,6 +51,13 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return userTechRepository.findByUserId(userId);
+    }
+
+    public List<UserLink>  retrievesLinks(UUID userId) {
+        repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return userLinkRepository.findByUserId(userId);
     }
 
     public User update(

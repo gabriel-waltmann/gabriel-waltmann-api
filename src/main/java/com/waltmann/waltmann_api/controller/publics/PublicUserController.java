@@ -1,6 +1,7 @@
 package com.waltmann.waltmann_api.controller.publics;
 
 import com.waltmann.waltmann_api.domain.user.User;
+import com.waltmann.waltmann_api.domain.user.link.UserLink;
 import com.waltmann.waltmann_api.domain.user.project.UserProject;
 import com.waltmann.waltmann_api.domain.user.tech.UserTech;
 import com.waltmann.waltmann_api.service.user.UserService;
@@ -40,4 +41,12 @@ public class PublicUserController {
 
         return ResponseEntity.ok(userTechs);
     }
+
+    @GetMapping("/link")
+    public ResponseEntity<List<UserLink>> retrievesLinks(@PathVariable UUID userId) {
+        List<UserLink> userLinks = userService.retrievesLinks(userId);
+
+        return ResponseEntity.ok(userLinks);
+    }
 }
+
