@@ -3,8 +3,10 @@ package com.waltmann.waltmann_api.service.user;
 import com.waltmann.waltmann_api.domain.file.File;
 import com.waltmann.waltmann_api.domain.user.User;
 import com.waltmann.waltmann_api.domain.user.project.UserProject;
+import com.waltmann.waltmann_api.domain.user.tech.UserTech;
 import com.waltmann.waltmann_api.repositories.user.UserRepository;
 import com.waltmann.waltmann_api.repositories.user.project.UserProjectRepository;
+import com.waltmann.waltmann_api.repositories.user.tech.UserTechRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class UserService {
     private UserProjectRepository  userProjectRepository;
 
     @Autowired
+    private UserTechRepository  userTechRepository;
+
+    @Autowired
     FileService fileService;
 
     public User retrievesOne(UUID userId) {
@@ -34,6 +39,13 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return userProjectRepository.findByUserId(userId);
+    }
+
+    public List<UserTech>  retrievesTechs(UUID userId) {
+        repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return userTechRepository.findByUserId(userId);
     }
 
     public User update(

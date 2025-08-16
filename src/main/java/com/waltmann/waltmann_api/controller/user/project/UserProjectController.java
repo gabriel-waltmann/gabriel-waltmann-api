@@ -21,11 +21,11 @@ public class UserProjectController {
         return service.create(userId, project_id);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{userProjectId}")
     public void delete(
             @PathVariable UUID userId,
-            @RequestParam UUID project_id
+            @PathVariable UUID userProjectId
     ) {
-        service.delete(userId, project_id);
+        service.delete(userId, userProjectId);
     }
 }

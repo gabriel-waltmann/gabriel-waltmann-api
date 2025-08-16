@@ -24,25 +24,17 @@ public class UserProjectService {
     private ProjectRepository projectRepository;
 
     public UserProject create(UUID userId, UUID projectId) {
-        System.out.println("Find user");
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        System.out.println("Find project");
-
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
-
-        System.out.println("Create user project");
 
         UserProject userProject = new UserProject();
 
         userProject.setUser(user);
 
         userProject.setProject(project);
-
-        System.out.println("Save user project");
 
         repository.save(userProject);
 
@@ -58,19 +50,22 @@ public class UserProjectService {
         return repository.findByUserId(userId);
     }
 
-    public UserProject retrievesOne(UUID userId, UUID projectId) {
+    public UserProject retrievesOne(UUID userId, UUID userProjectId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return repository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+        return  repository.findById(userProjectId)
+                .orElseThrow(() -> new RuntimeException("User project not found"));
     }
 
-    public void delete(UUID userId, UUID projectId) {
+    public void delete(UUID userId, UUID userProjectId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        repository.deleteById(projectId);
+        repository.findById(userProjectId)
+                .orElseThrow(() -> new RuntimeException("User project not found"));
+
+        repository.deleteById(userProjectId);
     }
 
 }

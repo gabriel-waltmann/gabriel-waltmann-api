@@ -2,6 +2,7 @@ package com.waltmann.waltmann_api.controller.publics;
 
 import com.waltmann.waltmann_api.domain.user.User;
 import com.waltmann.waltmann_api.domain.user.project.UserProject;
+import com.waltmann.waltmann_api.domain.user.tech.UserTech;
 import com.waltmann.waltmann_api.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,4 +34,10 @@ public class PublicUserController {
         return ResponseEntity.ok(userProjects);
     }
 
+    @GetMapping("/tech")
+    public ResponseEntity<List<UserTech>> retrievesTechs(@PathVariable UUID userId) {
+        List<UserTech> userTechs = userService.retrievesTechs(userId);
+
+        return ResponseEntity.ok(userTechs);
+    }
 }
