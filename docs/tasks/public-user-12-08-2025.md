@@ -3,8 +3,8 @@
 - [X] Any /public route should be accessible without authentication
 
 - [ ] Should update user (name, email, title, about, phone, profile file)
-    - [ ] PUT /user
-
+    - [X] PUT /user
+  
 - [ ] Should bind the project and user
     - POST /user/project
 
