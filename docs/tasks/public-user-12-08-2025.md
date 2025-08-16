@@ -2,14 +2,17 @@
 
 - [X] Any /public route should be accessible without authentication
 
-- [ ] Should update user (name, email, title, about, phone, profile file)
+- [ ] Should update user (name, email, title, about, phone, profile file, PROJECTS, TECHS, LINKS)
     - [X] PUT /user
   
 - [ ] Should bind the project and user
-    - POST /user/project
+    - [X] POST /user/project
 
 - [ ] Should bind the tech and user
-    - POST /user/tech
+    - [X] POST /user/tech
+  
+- [ ] Should retrieves all user projects publicly
+    - [X] GET /public/user/{UUID}/project
 
 - [ ] Should bind the link and user
     - POST /user/link

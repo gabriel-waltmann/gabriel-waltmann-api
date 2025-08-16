@@ -2,12 +2,15 @@ package com.waltmann.waltmann_api.service.user;
 
 import com.waltmann.waltmann_api.domain.file.File;
 import com.waltmann.waltmann_api.domain.user.User;
+import com.waltmann.waltmann_api.domain.user.project.UserProject;
 import com.waltmann.waltmann_api.repositories.user.UserRepository;
+import com.waltmann.waltmann_api.repositories.user.project.UserProjectRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -16,10 +19,21 @@ public class UserService {
     private UserRepository repository;
 
     @Autowired
+    private UserProjectRepository  userProjectRepository;
+
+    @Autowired
     FileService fileService;
 
-    public User retrievesOne(UUID id) {
-        return repository.findById(id).orElse(null);
+    public User retrievesOne(UUID userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public List<UserProject> retrievesProjects(UUID userId) {
+        repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return userProjectRepository.findByUserId(userId);
     }
 
     public User update(
