@@ -1,11 +1,11 @@
-package com.waltmann.waltmann_api.controller.user;
+package com.waltmann.waltmann_api.controller.auth;
 
 import com.waltmann.waltmann_api.domain.user.User;
 import com.waltmann.waltmann_api.domain.user.UserLoginDTO;
 import com.waltmann.waltmann_api.domain.user.UserLoginResponse;
 import com.waltmann.waltmann_api.domain.user.UserRegisterDTO;
 import com.waltmann.waltmann_api.helper.JwtHelper;
-import com.waltmann.waltmann_api.service.user.UserService;
+import com.waltmann.waltmann_api.service.auth.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class UserController {
+public class AuthController {
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody UserRegisterDTO body) {
-        User user = this.userService.register(body);
+        User user = this.authService.register(body);
 
         return ResponseEntity.ok(user);
     }

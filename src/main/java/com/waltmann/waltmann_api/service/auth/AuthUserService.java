@@ -1,4 +1,4 @@
-package com.waltmann.waltmann_api.service.user;
+package com.waltmann.waltmann_api.service.auth;
 
 import com.waltmann.waltmann_api.domain.user.User;
 import com.waltmann.waltmann_api.exceptions.NotFoundException;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class AuthUserService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 

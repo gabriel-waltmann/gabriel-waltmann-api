@@ -3,7 +3,7 @@ package com.waltmann.waltmann_api.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.waltmann.waltmann_api.exceptions.AccessDeniedException;
 import com.waltmann.waltmann_api.helper.JwtHelper;
-import com.waltmann.waltmann_api.service.user.UserDetailsServiceImpl;
+import com.waltmann.waltmann_api.service.auth.AuthUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private AuthUserService userDetailsService;
 
     @Autowired
     private ObjectMapper objectMapper;
