@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @ActiveProfiles("test")
 public class UserRepositoryTest {
-    @Autowired
-    EntityManager entityManager;
+        @Autowired
+        EntityManager entityManager;
 
     @Autowired
     UserRepository repository;
