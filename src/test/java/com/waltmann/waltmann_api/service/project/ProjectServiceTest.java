@@ -3,8 +3,6 @@ package com.waltmann.waltmann_api.service.project;
 import com.waltmann.waltmann_api.domain.project.Project;
 import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
-import com.waltmann.waltmann_api.repositories.project.file.ProjectFileRepository;
-import com.waltmann.waltmann_api.repositories.project.tech.ProjectTechRepository;
 import com.waltmann.waltmann_api.service.project.file.ProjectFileService;
 import com.waltmann.waltmann_api.service.project.tech.ProjectTechService;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +30,6 @@ class ProjectServiceTest {
   @Mock
   private ProjectRepository repository;
 
-  @Autowired
   @InjectMocks
   private ProjectService service;
 
