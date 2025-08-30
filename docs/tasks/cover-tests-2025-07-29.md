@@ -1,6 +1,6 @@
 ### Cover Unit tests
 
-- [ ] Repositories
+- [X] Repositories
     - [X] File
     - [X] User
     - [X] Project
@@ -9,3 +9,11 @@
     - [X] Link 
     - [X] Tech
 
+- [ ] Services
+  - [X] File
+  - [ ] Link
+  - [ ] Project
+  - [ ] Project File
+  - [ ] Project Tech
+  - [ ] Tech 
+  - [ ] User
