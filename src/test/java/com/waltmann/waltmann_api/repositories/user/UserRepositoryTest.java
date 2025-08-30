@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Optional;
+import java.util.UUID;
 
 @DataJpaTest
 @ActiveProfiles("test")
 public class UserRepositoryTest {
-        @Autowired
-        EntityManager entityManager;
+    @Autowired
+    EntityManager entityManager;
 
     @Autowired
     UserRepository repository;
@@ -38,6 +38,16 @@ public class UserRepositoryTest {
         assertEquals(user.getName(), userOptional.get().getName());
         assertEquals(user.getEmail(), userOptional.get().getEmail());
         assertEquals(user.getPassword(), userOptional.get().getPassword());
+    }
+
+    @Test
+    @DisplayName("Should not get user by id from DB when user not exists")
+    void getUserNotFound() {
+        UUID userId = UUID.randomUUID();
+
+        Optional<User> userOptional = repository.findById(userId);
+
+        assertTrue(userOptional.isEmpty());
     }
 
     @Test

@@ -8,15 +8,13 @@ import com.waltmann.waltmann_api.repositories.file.FileRepository;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.repositories.project.file.ProjectFileRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
-import com.waltmann.waltmann_api.service.project.ProjectService;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,14 +23,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
 class ProjectFileServiceTest {
   @Mock
   private ProjectFileRepository repository;
 
-  @Autowired
   @InjectMocks
   private ProjectFileService service;
 
@@ -53,19 +49,20 @@ class ProjectFileServiceTest {
   @Test
   @DisplayName("Should create project file successfully when data is valid")
   void createSuccess() {
+    UUID id = UUID.randomUUID();
     Project project = new Project();
     File file = new File();
-    MultipartFile multipartFile =new MockMultipartFile(
-        "file",                     // Name of the parameter in the request
-        "testfile.txt",             // Original filename
-        "text/plain",               // Content type
-        "This is a test file.".getBytes() // File content
+    MultipartFile multipartFile = new MockMultipartFile(
+        "file",
+        "testfile.txt",
+        "text/plain",
+        "This is a test file.".getBytes()
     ) ;
 
     ProjectFile projectFile = new ProjectFile();
+    projectFile.setId(id);
     projectFile.setProject(project);
     projectFile.setFile(file);
-
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
     when(fileRepository.findById(file.getId())).thenReturn(Optional.of(file));
@@ -73,7 +70,7 @@ class ProjectFileServiceTest {
 
     ProjectFile result = service.create(project.getId(), multipartFile);
 
-    assertThat(result).isNotNull();
+    assertNotNull(result);
   }
 
   @Test
@@ -91,23 +88,23 @@ class ProjectFileServiceTest {
     when(projectRepository.save(project1)).thenReturn(project1);
     when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.create(project1.getId(), null)
     );
 
-    Assertions.assertEquals("File not found", thrown.getMessage());
+    assertEquals("File not found", thrown.getMessage());
   }
 
   @Test
   @DisplayName("Should throw exception when project id is not valid")
   void createFailInvalidProjectId() {
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.create(UUID.randomUUID(), null)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -128,7 +125,7 @@ class ProjectFileServiceTest {
     when(repository.findById(projectFile1.getId())).thenReturn(Optional.of(projectFile1));
     when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
 
-    assertThat(service.retrievesOne(projectFile1.getId(), project1.getId())).isNotNull();
+    assertNotNull(service.retrievesOne(projectFile1.getId(), project1.getId()));
   }
 
   @Test
@@ -137,12 +134,12 @@ class ProjectFileServiceTest {
     UUID id = UUID.randomUUID();
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrievesOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -154,12 +151,12 @@ class ProjectFileServiceTest {
 
     when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrievesOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project file not found", thrown.getMessage());
+    assertEquals("Project file not found", thrown.getMessage());
   }
 
   @Test
@@ -181,7 +178,7 @@ class ProjectFileServiceTest {
 
     when(repository.findByProjectId(projectFile1.getProject().getId())).thenReturn(projectFiles);
 
-    assertThat(service.retrieves(projectFile1.getProject().getId())).isNotNull();
+    assertNotNull(service.retrieves(projectFile1.getProject().getId()));
   }
 
   @Test
@@ -189,12 +186,12 @@ class ProjectFileServiceTest {
   void retrievesFailNotFoundProject() {
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrieves(projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -221,12 +218,12 @@ class ProjectFileServiceTest {
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.deleteOne(id, project.getId())
     );
 
-    Assertions.assertEquals("Project file not found", thrown.getMessage());
+    assertEquals("Project file not found", thrown.getMessage());
   }
 
   @Test
@@ -235,12 +232,12 @@ class ProjectFileServiceTest {
     UUID id = UUID.randomUUID();
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.deleteOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -258,11 +255,11 @@ class ProjectFileServiceTest {
   void deleteFailNotFound() {
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.delete(projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 }
