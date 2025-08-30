@@ -32,9 +32,9 @@ public class ProjectFileController {
       @PathVariable UUID projectId,
       @PathVariable UUID id
   ) {
-    projectFileService.deleteOne(id, projectId);
+    Boolean result = projectFileService.delete(id);
 
-    return ResponseEntity.ok(true);
+    return ResponseEntity.ok(result);
   }
 
   @GetMapping

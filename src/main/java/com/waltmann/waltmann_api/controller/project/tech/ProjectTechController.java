@@ -49,8 +49,8 @@ public class ProjectTechController {
       @PathVariable UUID projectId,
       @PathVariable UUID id
   ) {
-    projectService.deleteOne(id, projectId);
+    Boolean result = projectService.delete(id);
 
-    return ResponseEntity.ok(true);
+    return ResponseEntity.ok(result);
   }
 }
