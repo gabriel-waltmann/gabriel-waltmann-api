@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -30,14 +28,15 @@ class ProjectServiceTest {
   @Mock
   private ProjectRepository repository;
 
-  @InjectMocks
-  private ProjectService service;
-
   @Mock
   private ProjectFileService projectFileService;
 
   @Mock
   private ProjectTechService projectTechService;
+
+  @InjectMocks
+  private ProjectService service;
+
 
   @BeforeEach
   void setUp() {
@@ -60,9 +59,12 @@ class ProjectServiceTest {
 
     Project project = service.create(projectRequestDTO);
 
-    assertThat(project).isNotNull();
-    assertThat(project.getTitle()).isEqualTo(projectRequestDTO.title());
-    assertThat(project.getDescription()).isEqualTo(projectRequestDTO.description());
+    System.out.println(project.getTitle());
+    System.out.println(projectRequestDTO.title());
+
+    assertNotNull(project);
+    assertEquals(project.getTitle(), projectRequestDTO.title());
+    assertEquals(project.getDescription(), projectRequestDTO.description());
   }
 
   @Test
@@ -77,12 +79,12 @@ class ProjectServiceTest {
     project1.setTitle(projectRequestDTO.title());
     project1.setDescription(projectRequestDTO.description());
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.create(projectRequestDTO)
     );
 
-    Assertions.assertEquals("Invalid data", thrown.getMessage());
+    assertEquals("Invalid data", thrown.getMessage());
   }
 
   @Test
@@ -118,7 +120,7 @@ class ProjectServiceTest {
 
     when(repository.findById(project1.getId())).thenReturn(java.util.Optional.of(project1));
 
-    assertThat(service.retrievesOne(project1.getId())).isNotNull();
+    assertNotNull(service.retrievesOne(project1.getId()));
   }
 
   @Test
@@ -126,12 +128,12 @@ class ProjectServiceTest {
   void retrievesOneFail() {
     UUID id = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrievesOne(id)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -151,9 +153,9 @@ class ProjectServiceTest {
 
     Project project = service.update(project1.getId(), projectRequestDTO);
 
-    assertThat(project).isNotNull();
-    assertThat(project.getTitle()).isEqualTo(projectRequestDTO.title());
-    assertThat(project.getDescription()).isEqualTo(projectRequestDTO.description());
+    assertNotNull(project);
+    assertEquals(project.getTitle(), projectRequestDTO.title());
+    assertEquals(project.getDescription(), projectRequestDTO.description());
   }
 
   @Test
@@ -170,12 +172,12 @@ class ProjectServiceTest {
 
     when(repository.findById(project1.getId())).thenReturn(java.util.Optional.of(project1));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.update(project1.getId(), projectRequestDTO)
     );
 
-    Assertions.assertEquals("Invalid data", thrown.getMessage());
+    assertEquals("Invalid data", thrown.getMessage());
   }
 
   @Test
@@ -190,12 +192,12 @@ class ProjectServiceTest {
     project1.setTitle(projectRequestDTO.title());
     project1.setDescription(projectRequestDTO.description());
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.update(project1.getId(), projectRequestDTO)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -213,11 +215,11 @@ class ProjectServiceTest {
   @Test
   @DisplayName("Should throw exception when id is not valid")
   void deleteFail() {
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
       RuntimeException.class,
       () -> service.delete(UUID.randomUUID())
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 }

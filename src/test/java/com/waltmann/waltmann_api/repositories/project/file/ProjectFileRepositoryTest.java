@@ -13,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -45,7 +44,7 @@ class ProjectFileRepositoryTest {
   void findByProjectIdNotFound() {
     List<ProjectFile> projectTechs = repository.findByProjectId(UUID.randomUUID());
 
-    assertThat(projectTechs.isEmpty()).isTrue();
+    assertTrue(projectTechs.isEmpty());
   }
 
   private Project createProject(String projectTitle, String projectDescription) {

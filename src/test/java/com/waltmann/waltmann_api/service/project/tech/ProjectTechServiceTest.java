@@ -8,28 +8,25 @@ import com.waltmann.waltmann_api.repositories.tech.TechRepository;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.repositories.project.tech.ProjectTechRepository;
 import com.waltmann.waltmann_api.service.tech.TechService;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
 class ProjectTechServiceTest {
   @Mock
   private ProjectTechRepository repository;
 
-  @Autowired
   @InjectMocks
   private ProjectTechService service;
 
@@ -63,7 +60,7 @@ class ProjectTechServiceTest {
 
     ProjectTech result = service.create(project.getId(), tech.getId());
 
-    assertThat(result).isNotNull();
+    assertNotNull(result);
   }
 
   @Test
@@ -75,12 +72,12 @@ class ProjectTechServiceTest {
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.create(techId, project.getId())
     );
 
-    Assertions.assertEquals("Tech not found", thrown.getMessage());
+    assertEquals("Tech not found", thrown.getMessage());
   }
 
   @Test
@@ -91,12 +88,12 @@ class ProjectTechServiceTest {
     Tech tech = new Tech();
 
     when(techRepository.findById(tech.getId())).thenReturn(Optional.of(tech));
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.create(tech.getId(), projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -117,7 +114,7 @@ class ProjectTechServiceTest {
     when(repository.findById(projectTech1.getId())).thenReturn(Optional.of(projectTech1));
     when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
 
-    assertThat(service.retrievesOne(projectTech1.getId(), project1.getId())).isNotNull();
+    assertNotNull(service.retrievesOne(projectTech1.getId(), project1.getId()));
   }
 
   @Test
@@ -126,12 +123,12 @@ class ProjectTechServiceTest {
     UUID id = UUID.randomUUID();
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrievesOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -143,12 +140,12 @@ class ProjectTechServiceTest {
 
     when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrievesOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project tech not found", thrown.getMessage());
+    assertEquals("Project tech not found", thrown.getMessage());
   }
 
   @Test
@@ -170,7 +167,7 @@ class ProjectTechServiceTest {
 
     when(repository.findByProjectId(projectTech1.getProject().getId())).thenReturn(projectTechs);
 
-    assertThat(service.retrieves(projectTech1.getProject().getId())).isNotNull();
+    assertNotNull(service.retrieves(projectTech1.getProject().getId()));
   }
 
   @Test
@@ -178,12 +175,12 @@ class ProjectTechServiceTest {
   void retrievesFailNotFoundProject() {
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.retrieves(projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -210,12 +207,12 @@ class ProjectTechServiceTest {
 
     when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.deleteOne(id, project.getId())
     );
 
-    Assertions.assertEquals("Project tech not found", thrown.getMessage());
+    assertEquals("Project tech not found", thrown.getMessage());
   }
 
   @Test
@@ -224,12 +221,12 @@ class ProjectTechServiceTest {
     UUID id = UUID.randomUUID();
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.deleteOne(id, projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 
   @Test
@@ -247,11 +244,11 @@ class ProjectTechServiceTest {
   void deleteFailNotFound() {
     UUID projectId = UUID.randomUUID();
 
-    Exception thrown = Assertions.assertThrows(
+    Exception thrown = assertThrows(
         RuntimeException.class,
         () -> service.delete(projectId)
     );
 
-    Assertions.assertEquals("Project not found", thrown.getMessage());
+    assertEquals("Project not found", thrown.getMessage());
   }
 }
