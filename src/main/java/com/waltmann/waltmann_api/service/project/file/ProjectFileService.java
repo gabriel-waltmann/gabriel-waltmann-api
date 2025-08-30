@@ -15,82 +15,51 @@ import java.util.UUID;
 
 @Service
 public class ProjectFileService {
-  @Autowired
-  private ProjectFileRepository repository;
+    @Autowired
+    private ProjectFileRepository repository;
 
-  @Autowired
-  private ProjectRepository projectRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
-  @Autowired
-  private FileService fileService;
+    @Autowired
+    private FileService fileService;
 
-  public ProjectFile create(UUID projectId, MultipartFile multipartFile) {
-    Project project = projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("Project not found"));
+    public ProjectFile create(UUID projectId, MultipartFile multipartFile) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    if (multipartFile == null) {
-      throw new RuntimeException("File not found");
+        if (multipartFile == null) {
+            throw new RuntimeException("File not found");
+        }
+
+        File file = fileService.create(multipartFile);
+
+        ProjectFile projectFile = new ProjectFile();
+        projectFile.setProject(project);
+        projectFile.setFile(file);
+
+        ProjectFile savedProjectFile = repository.save(projectFile);
+
+        return savedProjectFile;
     }
 
-    File file = fileService.create(multipartFile);
+    public ProjectFile retrievesOne(UUID id, UUID projectId) {
+        projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    ProjectFile projectFile = new ProjectFile();
-
-    projectFile.setProject(project);
-    projectFile.setFile(file);
-
-    repository.save(projectFile);
-
-    return projectFile;
-  }
-
-  public ProjectFile retrievesOne(UUID id, UUID projectId) {
-    projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("Project not found"));
-
-    return repository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Project file not found"));
-  }
-
-  public List<ProjectFile> retrieves(UUID projectId) {
-    projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("Project not found"));
-
-    List<ProjectFile> projectFiles = repository.findByProjectId(projectId);
-
-    return projectFiles.stream().toList();
-  }
-
-  public void deleteOne(UUID id, UUID projectId) {
-    projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("Project not found"));
-
-    ProjectFile projectFile = retrievesOne(id, projectId);
-
-    if (projectFile == null) {
-      throw new RuntimeException("Project file not found");
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project file not found"));
     }
 
-    UUID fileId = projectFile.getFile().getId();
-    File file = fileService.retrievesOne(fileId);
+    public List<ProjectFile> retrieves(UUID projectId) {
+        projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    if (file == null) {
-      throw new RuntimeException("File not found");
+        return repository.findByProjectId(projectId);
     }
 
-    fileService.delete(fileId);
-
-    repository.delete(projectFile);
-  }
-
-  public void delete(UUID projectId) {
-    projectRepository.findById(projectId)
-        .orElseThrow(() -> new RuntimeException("Project not found"));
-
-    List<ProjectFile> projectFiles = repository.findByProjectId(projectId);
-
-    for (ProjectFile projectFile : projectFiles) {
-      deleteOne(projectFile.getId(), projectId);
+    public Boolean delete(UUID id) {
+        repository.deleteById(id);
+        return true;
     }
-  }
 }

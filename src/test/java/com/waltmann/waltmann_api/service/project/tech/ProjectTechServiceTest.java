@@ -1,14 +1,12 @@
 package com.waltmann.waltmann_api.service.project.tech;
 
-import com.waltmann.waltmann_api.domain.tech.Tech;
 import com.waltmann.waltmann_api.domain.project.Project;
-import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
 import com.waltmann.waltmann_api.domain.project.tech.ProjectTech;
-import com.waltmann.waltmann_api.repositories.tech.TechRepository;
+import com.waltmann.waltmann_api.domain.tech.Tech;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.repositories.project.tech.ProjectTechRepository;
+import com.waltmann.waltmann_api.repositories.tech.TechRepository;
 import com.waltmann.waltmann_api.service.tech.TechService;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,239 +14,176 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ProjectTechServiceTest {
-  @Mock
-  private ProjectTechRepository repository;
+    @Mock
+    private ProjectTechRepository repository;
 
-  @InjectMocks
-  private ProjectTechService service;
+    @Mock
+    private ProjectRepository projectRepository;
 
-  @Mock
-  private ProjectRepository projectRepository;
+    @Mock
+    private TechRepository techRepository;
 
-  @Mock
-  private TechService techService;
+    @Mock
+    private TechService techService;
 
-  @Mock
-  private TechRepository techRepository;
+    @InjectMocks
+    private ProjectTechService service;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
-  @Test
-  @DisplayName("Should create project tech successfully when data is valid")
-  void createSuccess() {
-    Project project = new Project();
-    Tech tech = new Tech();
+    @Test
+    @DisplayName("Should create project tech successfully when project and tech exist")
+    void createSuccess() {
+        UUID projectId = UUID.randomUUID();
+        UUID techId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
+        Tech tech = createTech("Java");
 
-    ProjectTech projectTech = new ProjectTech();
-    projectTech.setProject(project);
-    projectTech.setTech(tech);
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(techRepository.findById(techId)).thenReturn(Optional.of(tech));
+        when(repository.save(any(ProjectTech.class))).thenAnswer(invocation -> {
+            ProjectTech projectTechToSave = invocation.getArgument(0);
+            projectTechToSave.setId(UUID.randomUUID());
+            return projectTechToSave;
+        });
 
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-    when(techRepository.findById(tech.getId())).thenReturn(Optional.of(tech));
-    when(repository.save(projectTech)).thenReturn(projectTech);
+        ProjectTech result = service.create(techId, projectId);
 
-    ProjectTech result = service.create(project.getId(), tech.getId());
+        assertNotNull(result.getId());
+        assertEquals(project, result.getProject());
+        assertEquals(tech, result.getTech());
+        verify(projectRepository).findById(projectId);
+        verify(techRepository).findById(techId);
+        verify(repository).save(any(ProjectTech.class));
+    }
 
-    assertNotNull(result);
-  }
+    @Test
+    @DisplayName("Should throw exception when project is not found for create")
+    void createFailProjectNotFound() {
+        UUID projectId = UUID.randomUUID();
+        UUID techId = UUID.randomUUID();
 
-  @Test
-  @DisplayName("Should throw exception when tech id is not valid")
-  void createFailInvalidTechId() {
-    UUID techId = UUID.randomUUID();
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
-    Project project = new Project();
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.create(techId, projectId)
+        );
 
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        assertEquals("Project not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(techRepository, never()).findById(any(UUID.class));
+        verify(repository, never()).save(any(ProjectTech.class));
+    }
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.create(techId, project.getId())
-    );
+    @Test
+    @DisplayName("Should throw exception when tech is not found for create")
+    void createFailTechNotFound() {
+        UUID projectId = UUID.randomUUID();
+        UUID techId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
 
-    assertEquals("Tech not found", thrown.getMessage());
-  }
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(techRepository.findById(techId)).thenReturn(Optional.empty());
 
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void createFailInvalidProjectId() {
-    UUID projectId = UUID.randomUUID();
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.create(techId, projectId)
+        );
 
-    Tech tech = new Tech();
+        assertEquals("Tech not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(techRepository).findById(techId);
+        verify(repository, never()).save(any(ProjectTech.class));
+    }
 
-    when(techRepository.findById(tech.getId())).thenReturn(Optional.of(tech));
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.create(tech.getId(), projectId)
-    );
+    @Test
+    @DisplayName("Should retrieve project techs successfully when project exists")
+    void retrievesSuccess() {
+        UUID projectId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
+        Tech tech1 = createTech("Java");
+        Tech tech2 = createTech("Spring");
+        List<ProjectTech> projectTechs = Arrays.asList(
+                createProjectTech(project, tech1),
+                createProjectTech(project, tech2)
+        );
 
-    assertEquals("Project not found", thrown.getMessage());
-  }
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(repository.findByProjectId(projectId)).thenReturn(projectTechs);
 
-  @Test
-  @DisplayName("Should retrieve project tech successfully when data is valid")
-  void retrievesOneSuccess() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1",
-        "Description 1"
-    );
+        List<ProjectTech> result = service.retrieves(projectId);
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        assertEquals(2, result.size());
+        assertEquals("Java", result.get(0).getTech().getName());
+        assertEquals("Spring", result.get(1).getTech().getName());
+        verify(projectRepository).findById(projectId);
+        verify(repository).findByProjectId(projectId);
+    }
 
-    ProjectTech projectTech1 = new ProjectTech();
-    projectTech1.setProject(project1);
+    @Test
+    @DisplayName("Should throw exception when project is not found for retrieves")
+    void retrievesFailProjectNotFound() {
+        UUID projectId = UUID.randomUUID();
 
-    when(repository.findById(projectTech1.getId())).thenReturn(Optional.of(projectTech1));
-    when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
-    assertNotNull(service.retrievesOne(projectTech1.getId(), project1.getId()));
-  }
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.retrieves(projectId)
+        );
 
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void retrievesOneFailNotFoundProject() {
-    UUID id = UUID.randomUUID();
-    UUID projectId = UUID.randomUUID();
+        assertEquals("Project not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(repository, never()).findByProjectId(any(UUID.class));
+    }
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrievesOne(id, projectId)
-    );
+    @Test
+    @DisplayName("Should delete project tech successfully when it exists")
+    void deleteSuccess() {
+        UUID projectTechId = UUID.randomUUID();
 
-    assertEquals("Project not found", thrown.getMessage());
-  }
+        doNothing().when(repository).deleteById(projectTechId);
 
-  @Test
-  @DisplayName("Should throw exception when id is not valid")
-  void retrievesOneFailNotFound() {
-    UUID id = UUID.randomUUID();
-    Project project = new Project();
-    UUID projectId = project.getId();
+        Boolean result = service.delete(projectTechId);
 
-    when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        assertTrue(result);
+        verify(repository).deleteById(projectTechId);
+    }
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrievesOne(id, projectId)
-    );
+    private Project createProject(String title, String description) {
+        Project project = new Project();
+        project.setId(UUID.randomUUID());
+        project.setTitle(title);
+        project.setDescription(description);
+        return project;
+    }
 
-    assertEquals("Project tech not found", thrown.getMessage());
-  }
+    private Tech createTech(String name) {
+        Tech tech = new Tech();
+        tech.setId(UUID.randomUUID());
+        tech.setName(name);
+        return tech;
+    }
 
-  @Test
-  @DisplayName("Should retrieve project techs successfully when data is valid")
-  void retrievesSuccess() {
-    Project project = new Project();
-
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-
-    List<ProjectTech> projectTechs = new ArrayList<ProjectTech>();
-
-    ProjectTech projectTech1 = new ProjectTech();
-    projectTech1.setProject(project);
-    projectTechs.add(projectTech1);
-
-    ProjectTech projectTech2 = new ProjectTech();
-    projectTech2.setProject(project);
-    projectTechs.add(projectTech2);
-
-    when(repository.findByProjectId(projectTech1.getProject().getId())).thenReturn(projectTechs);
-
-    assertNotNull(service.retrieves(projectTech1.getProject().getId()));
-  }
-
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void retrievesFailNotFoundProject() {
-    UUID projectId = UUID.randomUUID();
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrieves(projectId)
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
-
-  @Test
-  @DisplayName("Should delete project tech successfully when data is valid")
-  void deleteOneSuccess() {
-    Project project = new Project();
-    Tech tech = new Tech();
-    ProjectTech projectTech = new ProjectTech();
-    projectTech.setProject(project);
-    projectTech.setTech(tech);
-
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-    when(techService.retrievesOne(projectTech.getTech().getId())).thenReturn(tech);
-    when(repository.findById(projectTech.getId())).thenReturn(Optional.of(projectTech));
-
-    service.deleteOne(projectTech.getId(), project.getId());
-  }
-
-  @Test
-  @DisplayName("Should throw exception when id is not valid")
-  void deleteOneFailNotFound() {
-    UUID id = UUID.randomUUID();
-    Project project = new Project();
-
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.deleteOne(id, project.getId())
-    );
-
-    assertEquals("Project tech not found", thrown.getMessage());
-  }
-
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void deleteOneFailNotFoundProject() {
-    UUID id = UUID.randomUUID();
-    UUID projectId = UUID.randomUUID();
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.deleteOne(id, projectId)
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
-
-  @Test
-  @DisplayName("Should delete project techs successfully")
-  void deleteSuccess() {
-    Project project = new Project();
-
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-
-    service.delete(project.getId());
-  }
-
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void deleteFailNotFound() {
-    UUID projectId = UUID.randomUUID();
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.delete(projectId)
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
+    private ProjectTech createProjectTech(Project project, Tech tech) {
+        ProjectTech projectTech = new ProjectTech();
+        projectTech.setId(UUID.randomUUID());
+        projectTech.setProject(project);
+        projectTech.setTech(tech);
+        return projectTech;
+    }
 }

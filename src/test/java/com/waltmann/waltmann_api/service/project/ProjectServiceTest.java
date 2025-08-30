@@ -5,7 +5,6 @@ import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.service.project.file.ProjectFileService;
 import com.waltmann.waltmann_api.service.project.tech.ProjectTechService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,209 +16,204 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ProjectServiceTest {
-  @Mock
-  private ProjectRepository repository;
+    @Mock
+    private ProjectRepository repository;
 
-  @Mock
-  private ProjectFileService projectFileService;
+    @Mock
+    private ProjectFileService projectFileService;
 
-  @Mock
-  private ProjectTechService projectTechService;
+    @Mock
+    private ProjectTechService projectTechService;
 
-  @InjectMocks
-  private ProjectService service;
+    @InjectMocks
+    private ProjectService service;
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
+    @Test
+    @DisplayName("Should create project successfully when data is valid")
+    void createProjectSuccess() {
+        ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
+                "Project 1",
+                "Description 1"
+        );
 
-  @Test
-  @DisplayName("Should create project successfully when data is valid")
-  void createProjectSuccess() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1",
-        "Description 1"
-    );
+        // Mock repository save to return project with ID set
+        when(repository.save(any(Project.class))).thenAnswer(invocation -> {
+            Project projectToSave = invocation.getArgument(0);
+            projectToSave.setId(UUID.randomUUID());
+            return projectToSave;
+        });
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        Project result = service.create(projectRequestDTO);
 
-    when(repository.save(project1)).thenReturn(project1);
+        assertNotNull(result.getId());
+        assertEquals(projectRequestDTO.title(), result.getTitle());
+        assertEquals(projectRequestDTO.description(), result.getDescription());
+        verify(repository).save(any(Project.class));
+    }
 
-    Project project = service.create(projectRequestDTO);
+    @Test
+    @DisplayName("Should throw exception when data is not valid")
+    void createProjectFail() {
+        ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
+                "",
+                ""
+        );
 
-    System.out.println(project.getTitle());
-    System.out.println(projectRequestDTO.title());
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.create(projectRequestDTO)
+        );
 
-    assertNotNull(project);
-    assertEquals(project.getTitle(), projectRequestDTO.title());
-    assertEquals(project.getDescription(), projectRequestDTO.description());
-  }
+        assertEquals("Invalid data", thrown.getMessage());
+        verify(repository, never()).save(any(Project.class));
+    }
 
-  @Test
-  @DisplayName("Should throw exception when data is not valid")
-  void createProjectFail() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "",
-        ""
-    );
+    @Test
+    @DisplayName("Should retrieve projects successfully")
+    void retrievesSuccess() {
+        int page = 0;
+        int size = 10;
+        List<Project> projects = Arrays.asList(
+                createProject("Project 1", "Description 1"),
+                createProject("Project 2", "Description 2")
+        );
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        Page<Project> projectPage = new PageImpl<>(projects);
+        when(repository.findAll(any(Pageable.class))).thenReturn(projectPage);
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.create(projectRequestDTO)
-    );
+        List<Project> result = service.retrieves(page, size);
 
-    assertEquals("Invalid data", thrown.getMessage());
-  }
+        assertEquals(2, result.size());
+        assertEquals("Project 1", result.get(0).getTitle());
+        assertEquals("Project 2", result.get(1).getTitle());
+        verify(repository).findAll(PageRequest.of(page, size));
+    }
 
-  @Test
-  @DisplayName("Should retrieve projects successfully")
-  void retrieves() {
-    Project project1 = new Project();
-    project1.setTitle("Project 1");
-    project1.setDescription("Description 1");
+    @Test
+    @DisplayName("Should retrieve project successfully when id is valid")
+    void retrievesOneSuccess() {
+        Project project = createProject("Project 1", "Description 1");
 
-    Project project2 = new Project();
-    project2.setTitle("Project 2");
-    project2.setDescription("Description 2");
+        when(repository.findById(project.getId())).thenReturn(Optional.of(project));
 
-    List<Project> projects = new ArrayList<>();
-    projects.add(project1);
-    projects.add(project2);
+        Project result = service.retrievesOne(project.getId());
 
-    Pageable pageable = PageRequest.of(0, 10);
+        assertEquals(project.getId(), result.getId());
+        assertEquals(project.getTitle(), result.getTitle());
+        assertEquals(project.getDescription(), result.getDescription());
+        verify(repository).findById(project.getId());
+    }
 
-    Page<Project> projectPage = new PageImpl<>(projects, pageable, projects.size());
+    @Test
+    @DisplayName("Should throw exception when id is not found for retrieve")
+    void retrievesOneFail() {
+        UUID nonExistentId = UUID.randomUUID();
 
-    when(repository.findAll(pageable)).thenReturn(projectPage);
+        when(repository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-    assertEquals(2, service.retrieves(0, 10).size());
-  }
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.retrievesOne(nonExistentId)
+        );
 
-  @Test
-  @DisplayName("Should retrieve project successfully when id is valid")
-  void retrievesOneSuccess() {
-    Project project1 = new Project();
-    project1.setTitle("Project 1");
-    project1.setDescription("Description 1");
+        assertEquals("Project not found", thrown.getMessage());
+        verify(repository).findById(nonExistentId);
+    }
 
-    when(repository.findById(project1.getId())).thenReturn(java.util.Optional.of(project1));
+    @Test
+    @DisplayName("Should update project successfully when data is valid")
+    void updateSuccess() {
+        Project existingProject = createProject("Old Project", "Old Description");
+        ProjectRequestDTO updateRequest = new ProjectRequestDTO(
+                "Updated Project",
+                "Updated Description"
+        );
 
-    assertNotNull(service.retrievesOne(project1.getId()));
-  }
+        when(repository.findById(existingProject.getId())).thenReturn(Optional.of(existingProject));
+        when(repository.save(any(Project.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-  @Test
-  @DisplayName("Should throw exception when id is valid")
-  void retrievesOneFail() {
-    UUID id = UUID.randomUUID();
+        Project result = service.update(existingProject.getId(), updateRequest);
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrievesOne(id)
-    );
+        assertEquals(existingProject.getId(), result.getId());
+        assertEquals(updateRequest.title(), result.getTitle());
+        assertEquals(updateRequest.description(), result.getDescription());
+        verify(repository).findById(existingProject.getId());
+        verify(repository).save(existingProject);
+    }
 
-    assertEquals("Project not found", thrown.getMessage());
-  }
+    @Test
+    @DisplayName("Should throw exception when id is not found for update")
+    void updateFail() {
+        UUID nonExistentId = UUID.randomUUID();
+        ProjectRequestDTO updateRequest = new ProjectRequestDTO(
+                "Updated Project",
+                "Updated Description"
+        );
 
-  @Test
-  @DisplayName("Should update project successfully when data is valid")
-  void updateSuccess() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1 updated",
-        "Description 1 updated"
-    );
+        when(repository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.update(nonExistentId, updateRequest)
+        );
 
-    when(repository.findById(project1.getId())).thenReturn(java.util.Optional.of(project1));
-    when(repository.save(project1)).thenReturn(project1);
+        assertEquals("Project not found", thrown.getMessage());
+        verify(repository).findById(nonExistentId);
+        verify(repository, never()).save(any(Project.class));
+    }
 
-    Project project = service.update(project1.getId(), projectRequestDTO);
+    @Test
+    @DisplayName("Should delete project successfully when id is valid")
+    void deleteSuccess() {
+        Project existingProject = createProject("Project to Delete", "Description");
 
-    assertNotNull(project);
-    assertEquals(project.getTitle(), projectRequestDTO.title());
-    assertEquals(project.getDescription(), projectRequestDTO.description());
-  }
+        when(repository.findById(existingProject.getId())).thenReturn(Optional.of(existingProject));
+        doNothing().when(repository).delete(any(Project.class));
 
-  @Test
-  @DisplayName("Should throw exception when data is not valid")
-  void updateInvalidData() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "",
-        ""
-    );
+        Boolean result = service.delete(existingProject.getId());
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        assertTrue(result);
+        verify(repository).findById(existingProject.getId());
+        verify(repository).delete(existingProject);
+    }
 
-    when(repository.findById(project1.getId())).thenReturn(java.util.Optional.of(project1));
+    @Test
+    @DisplayName("Should throw exception when id is not found for delete")
+    void deleteFail() {
+        UUID nonExistentId = UUID.randomUUID();
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.update(project1.getId(), projectRequestDTO)
-    );
+        when(repository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-    assertEquals("Invalid data", thrown.getMessage());
-  }
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.delete(nonExistentId)
+        );
 
-  @Test
-  @DisplayName("Should throw exception when id is not valid")
-  void updateInvalidId() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1 updated",
-        "Description 1 updated"
-    );
+        assertEquals("Project not found", thrown.getMessage());
+        verify(repository).findById(nonExistentId);
+        verify(repository, never()).delete(any(Project.class));
+    }
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.update(project1.getId(), projectRequestDTO)
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
-
-  @Test
-  @DisplayName("Should delete project successfully when id is valid")
-  void deleteSuccess() {
-    Project project1 = new Project();
-    project1.setTitle("Project 1");
-    project1.setDescription("Description 1");
-
-    when(repository.findById(project1.getId())).thenReturn(java.util.Optional.of(project1));
-
-    service.delete(project1.getId());
-  }
-
-  @Test
-  @DisplayName("Should throw exception when id is not valid")
-  void deleteFail() {
-    Exception thrown = assertThrows(
-      RuntimeException.class,
-      () -> service.delete(UUID.randomUUID())
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
+    private Project createProject(String title, String description) {
+        Project project = new Project();
+        project.setId(UUID.randomUUID());
+        project.setTitle(title);
+        project.setDescription(description);
+        return project;
+    }
 }

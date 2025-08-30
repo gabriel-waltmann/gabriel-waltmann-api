@@ -2,13 +2,10 @@ package com.waltmann.waltmann_api.service.project.file;
 
 import com.waltmann.waltmann_api.domain.file.File;
 import com.waltmann.waltmann_api.domain.project.Project;
-import com.waltmann.waltmann_api.domain.project.ProjectRequestDTO;
 import com.waltmann.waltmann_api.domain.project.file.ProjectFile;
-import com.waltmann.waltmann_api.repositories.file.FileRepository;
 import com.waltmann.waltmann_api.repositories.project.ProjectRepository;
 import com.waltmann.waltmann_api.repositories.project.file.ProjectFileRepository;
 import com.waltmann.waltmann_api.service.file.FileService;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,248 +15,236 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ProjectFileServiceTest {
-  @Mock
-  private ProjectFileRepository repository;
+    @Mock
+    private ProjectFileRepository repository;
 
-  @InjectMocks
-  private ProjectFileService service;
+    @Mock
+    private ProjectRepository projectRepository;
 
-  @Mock
-  private ProjectRepository projectRepository;
+    @Mock
+    private FileService fileService;
 
-  @Mock
-  private FileService fileService;
+    @InjectMocks
+    private ProjectFileService service;
 
-  @Mock
-  private FileRepository fileRepository;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
+    @Test
+    @DisplayName("Should create project file successfully when project exists and file is valid")
+    void createSuccess() {
+        UUID projectId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
+        MultipartFile multipartFile = createMultipartFile();
+        File file = createFile("test-file.txt", "test-key");
 
-  @Test
-  @DisplayName("Should create project file successfully when data is valid")
-  void createSuccess() {
-    UUID id = UUID.randomUUID();
-    Project project = new Project();
-    File file = new File();
-    MultipartFile multipartFile = new MockMultipartFile(
-        "file",
-        "testfile.txt",
-        "text/plain",
-        "This is a test file.".getBytes()
-    ) ;
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(fileService.create(multipartFile)).thenReturn(file);
+        when(repository.save(any(ProjectFile.class))).thenAnswer(invocation -> {
+            ProjectFile projectFileToSave = invocation.getArgument(0);
+            projectFileToSave.setId(UUID.randomUUID());
+            return projectFileToSave;
+        });
 
-    ProjectFile projectFile = new ProjectFile();
-    projectFile.setId(id);
-    projectFile.setProject(project);
-    projectFile.setFile(file);
+        ProjectFile result = service.create(projectId, multipartFile);
 
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-    when(fileRepository.findById(file.getId())).thenReturn(Optional.of(file));
-    when(repository.save(projectFile)).thenReturn(projectFile);
+        assertNotNull(result.getId());
+        assertEquals(project, result.getProject());
+        assertEquals(file, result.getFile());
+        verify(projectRepository).findById(projectId);
+        verify(fileService).create(multipartFile);
+        verify(repository).save(any(ProjectFile.class));
+    }
 
-    ProjectFile result = service.create(project.getId(), multipartFile);
+    @Test
+    @DisplayName("Should throw exception when project is not found for create")
+    void createFailProjectNotFound() {
+        UUID projectId = UUID.randomUUID();
+        MultipartFile multipartFile = createMultipartFile();
 
-    assertNotNull(result);
-  }
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
-  @Test
-  @DisplayName("Should throw exception when file is not valid")
-  void createFailInvalidData() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1",
-        "Description 1"
-    );
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.create(projectId, multipartFile)
+        );
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        assertEquals("Project not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(fileService, never()).create(any(MultipartFile.class));
+        verify(repository, never()).save(any(ProjectFile.class));
+    }
 
-    when(projectRepository.save(project1)).thenReturn(project1);
-    when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
+    @Test
+    @DisplayName("Should throw exception when multipart file is null")
+    void createFailFileNull() {
+        UUID projectId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.create(project1.getId(), null)
-    );
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
 
-    assertEquals("File not found", thrown.getMessage());
-  }
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.create(projectId, null)
+        );
 
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void createFailInvalidProjectId() {
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.create(UUID.randomUUID(), null)
-    );
+        assertEquals("File not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(fileService, never()).create(any(MultipartFile.class));
+        verify(repository, never()).save(any(ProjectFile.class));
+    }
 
-    assertEquals("Project not found", thrown.getMessage());
-  }
+    @Test
+    @DisplayName("Should retrieve project file successfully when project and file exist")
+    void retrievesOneSuccess() {
+        UUID projectId = UUID.randomUUID();
+        UUID fileId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
+        ProjectFile projectFile = createProjectFile(project, createFile("test-file.txt", "test-key"));
 
-  @Test
-  @DisplayName("Should retrieve project file successfully when data is valid")
-  void retrievesOneSuccess() {
-    ProjectRequestDTO projectRequestDTO = new ProjectRequestDTO(
-        "Project 1",
-        "Description 1"
-    );
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(repository.findById(fileId)).thenReturn(Optional.of(projectFile));
 
-    Project project1 = new Project();
-    project1.setTitle(projectRequestDTO.title());
-    project1.setDescription(projectRequestDTO.description());
+        ProjectFile result = service.retrievesOne(fileId, projectId);
 
-    ProjectFile projectFile1 = new ProjectFile();
-    projectFile1.setProject(project1);
+        assertEquals(projectFile.getId(), result.getId());
+        assertEquals(project, result.getProject());
+        verify(projectRepository).findById(projectId);
+        verify(repository).findById(fileId);
+    }
 
-    when(repository.findById(projectFile1.getId())).thenReturn(Optional.of(projectFile1));
-    when(projectRepository.findById(project1.getId())).thenReturn(Optional.of(project1));
+    @Test
+    @DisplayName("Should throw exception when project is not found for retrievesOne")
+    void retrievesOneFailProjectNotFound() {
+        UUID projectId = UUID.randomUUID();
+        UUID fileId = UUID.randomUUID();
 
-    assertNotNull(service.retrievesOne(projectFile1.getId(), project1.getId()));
-  }
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void retrievesOneFailNotFoundProject() {
-    UUID id = UUID.randomUUID();
-    UUID projectId = UUID.randomUUID();
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.retrievesOne(fileId, projectId)
+        );
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrievesOne(id, projectId)
-    );
+        assertEquals("Project not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(repository, never()).findById(any(UUID.class));
+    }
 
-    assertEquals("Project not found", thrown.getMessage());
-  }
+    @Test
+    @DisplayName("Should throw exception when file is not found for retrievesOne")
+    void retrievesOneFailFileNotFound() {
+        UUID projectId = UUID.randomUUID();
+        UUID fileId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
 
-  @Test
-  @DisplayName("Should throw exception when id is not valid")
-  void retrievesOneFailNotFound() {
-    UUID id = UUID.randomUUID();
-    Project project = new Project();
-    UUID projectId = project.getId();
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(repository.findById(fileId)).thenReturn(Optional.empty());
 
-    when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.retrievesOne(fileId, projectId)
+        );
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrievesOne(id, projectId)
-    );
+        assertEquals("Project file not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(repository).findById(fileId);
+    }
 
-    assertEquals("Project file not found", thrown.getMessage());
-  }
+    @Test
+    @DisplayName("Should retrieve project files successfully when project exists")
+    void retrievesSuccess() {
+        UUID projectId = UUID.randomUUID();
+        Project project = createProject("Test Project", "Test Description");
+        List<ProjectFile> projectFiles = Arrays.asList(
+                createProjectFile(project, createFile("file1.txt", "key1")),
+                createProjectFile(project, createFile("file2.txt", "key2"))
+        );
 
-  @Test
-  @DisplayName("Should retrieve project files successfully when data is valid")
-  void retrievesSuccess() {
-    Project project = new Project();
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(repository.findByProjectId(projectId)).thenReturn(projectFiles);
 
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        List<ProjectFile> result = service.retrieves(projectId);
 
-    List<ProjectFile> projectFiles = new ArrayList<ProjectFile>();
+        assertEquals(2, result.size());
+        assertEquals("file1.txt", result.get(0).getFile().getName());
+        assertEquals("file2.txt", result.get(1).getFile().getName());
+        verify(projectRepository).findById(projectId);
+        verify(repository).findByProjectId(projectId);
+    }
 
-    ProjectFile projectFile1 = new ProjectFile();
-    projectFile1.setProject(project);
-    projectFiles.add(projectFile1);
+    @Test
+    @DisplayName("Should throw exception when project is not found for retrieves")
+    void retrievesFailProjectNotFound() {
+        UUID projectId = UUID.randomUUID();
 
-    ProjectFile projectFile2 = new ProjectFile();
-    projectFile2.setProject(project);
-    projectFiles.add(projectFile2);
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
-    when(repository.findByProjectId(projectFile1.getProject().getId())).thenReturn(projectFiles);
+        Exception thrown = assertThrows(
+                RuntimeException.class,
+                () -> service.retrieves(projectId)
+        );
 
-    assertNotNull(service.retrieves(projectFile1.getProject().getId()));
-  }
+        assertEquals("Project not found", thrown.getMessage());
+        verify(projectRepository).findById(projectId);
+        verify(repository, never()).findByProjectId(any(UUID.class));
+    }
 
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void retrievesFailNotFoundProject() {
-    UUID projectId = UUID.randomUUID();
+    @Test
+    @DisplayName("Should delete project file successfully when it exists")
+    void deleteSuccess() {
+        UUID projectFileId = UUID.randomUUID();
 
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.retrieves(projectId)
-    );
+        doNothing().when(repository).deleteById(projectFileId);
 
-    assertEquals("Project not found", thrown.getMessage());
-  }
+        Boolean result = service.delete(projectFileId);
 
-  @Test
-  @DisplayName("Should delete project file successfully when data is valid")
-  void deleteOneSuccess() {
-    Project project = new Project();
-    File file = new File();
-    ProjectFile projectFile = new ProjectFile();
-    projectFile.setProject(project);
-    projectFile.setFile(file);
+        assertTrue(result);
+        verify(repository).deleteById(projectFileId);
+    }
 
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-    when(fileService.retrievesOne(projectFile.getFile().getId())).thenReturn(file);
-    when(repository.findById(projectFile.getId())).thenReturn(Optional.of(projectFile));
+    private MultipartFile createMultipartFile() {
+        return new MockMultipartFile(
+                "file",
+                "testfile.txt",
+                "text/plain",
+                "This is a test file.".getBytes()
+        );
+    }
 
-    service.deleteOne(projectFile.getId(), project.getId());
-  }
+    private Project createProject(String title, String description) {
+        Project project = new Project();
+        project.setId(UUID.randomUUID());
+        project.setTitle(title);
+        project.setDescription(description);
+        return project;
+    }
 
-  @Test
-  @DisplayName("Should throw exception when id is not valid")
-  void deleteOneFailNotFound() {
-    UUID id = UUID.randomUUID();
-    Project project = new Project();
+    private File createFile(String name, String key) {
+        File file = new File();
+        file.setId(UUID.randomUUID());
+        file.setName(name);
+        file.setKey(key);
+        return file;
+    }
 
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.deleteOne(id, project.getId())
-    );
-
-    assertEquals("Project file not found", thrown.getMessage());
-  }
-
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void deleteOneFailNotFoundProject() {
-    UUID id = UUID.randomUUID();
-    UUID projectId = UUID.randomUUID();
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.deleteOne(id, projectId)
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
-
-  @Test
-  @DisplayName("Should delete project files successfully")
-  void deleteSuccess() {
-    Project project = new Project();
-
-    when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-
-    service.delete(project.getId());
-  }
-
-  @Test
-  @DisplayName("Should throw exception when project id is not valid")
-  void deleteFailNotFound() {
-    UUID projectId = UUID.randomUUID();
-
-    Exception thrown = assertThrows(
-        RuntimeException.class,
-        () -> service.delete(projectId)
-    );
-
-    assertEquals("Project not found", thrown.getMessage());
-  }
+    private ProjectFile createProjectFile(Project project, File file) {
+        ProjectFile projectFile = new ProjectFile();
+        projectFile.setId(UUID.randomUUID());
+        projectFile.setProject(project);
+        projectFile.setFile(file);
+        return projectFile;
+    }
 }
