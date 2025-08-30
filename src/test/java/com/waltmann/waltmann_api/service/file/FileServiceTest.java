@@ -41,10 +41,10 @@ public class FileServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        // Set the bucketName field using reflection since it's a @Value field
         try {
+            MockitoAnnotations.openMocks(this);
+
+            // Set the bucketName field using reflection since it's a @Value field
             java.lang.reflect.Field bucketNameField = FileService.class.getDeclaredField("bucketName");
             bucketNameField.setAccessible(true);
             bucketNameField.set(service, "test-bucket");

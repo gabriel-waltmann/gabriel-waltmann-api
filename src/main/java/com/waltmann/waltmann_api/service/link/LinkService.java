@@ -22,9 +22,7 @@ public class LinkService {
     link.setName(name);
     link.setKey(key);
 
-    repository.save(link);
-
-    return link;
+    return repository.save(link);
   }
 
   public List<Link> retrieves(int page, int size) {
