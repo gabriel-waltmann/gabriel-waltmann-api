@@ -39,9 +39,7 @@ public class FileService {
     file.setName(fileName);
     file.setKey(fileKey);
     
-    repository.save(file);
-
-    return file;
+    return repository.save(file);
   }
 
   public File retrievesOne(UUID id) {
