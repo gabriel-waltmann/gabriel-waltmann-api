@@ -15,5 +15,5 @@
   - [X] Project
   - [X] Project File
   - [X] Project Tech
-  - [ ] Tech 
+  - [X] Tech 
   - [ ] User
