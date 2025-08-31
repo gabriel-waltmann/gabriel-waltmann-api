@@ -41,9 +41,9 @@ public class TechService {
         tech.setLink(link);
         tech.setFile(file);
 
-        repository.save(tech);
+        Tech savedTech = repository.save(tech);
 
-        return tech;
+        return savedTech;
     }
 
     public Tech update(UUID id, String name, String linkName, String linkKey, MultipartFile multipartFile) {

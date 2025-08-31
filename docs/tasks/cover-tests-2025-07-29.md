@@ -11,9 +11,9 @@
 
 - [ ] Services
   - [X] File
-  - [ ] Link
-  - [ ] Project
-  - [ ] Project File
-  - [ ] Project Tech
+  - [X] Link
+  - [X] Project
+  - [X] Project File
+  - [X] Project Tech
   - [ ] Tech 
   - [ ] User
