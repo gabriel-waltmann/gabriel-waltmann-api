@@ -31,15 +31,12 @@ public class UserService {
         String hashedPassword = passwordEncoder.encode(password);
 
         User user = new User();
-
         user.setName(name);
-
         user.setEmail(email);
-
         user.setPassword(hashedPassword);
 
-        repository.save(user);
+        User savedUser = repository.save(user);
 
-        return user;
+        return savedUser;
     }
 }
